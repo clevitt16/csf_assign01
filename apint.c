@@ -14,8 +14,10 @@
 ApInt *apint_create_from_u64(uint64_t val) {
 	/* TODO: implement */
 	assert(0);
-	return NULL;
+	return NULL
+	
 }
+
 
 // milestone 2
 ApInt *apint_create_from_hex(const char *hex) {
@@ -27,7 +29,12 @@ ApInt *apint_create_from_hex(const char *hex) {
 // milestone 1
 // Peter
 void apint_destroy(ApInt *ap) {
-	/* TODO: implement */
+	
+	int n = *ap->len;
+
+	for(int i = 0; i < n; i++) {
+		free(*ap->data[i]);
+	}
 	assert(0);
 }
 
