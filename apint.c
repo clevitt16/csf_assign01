@@ -12,10 +12,16 @@
 // milestone 1
 // Casey
 ApInt *apint_create_from_u64(uint64_t val) {
-	/* TODO: implement */
+	ApInt * ptr = malloc(sizeof(ApInt));
+	ApInt apint;
+	apint.len = 1;
+	apint.flags = 0;
+	uint64_t * apintData = malloc(sizeof(uint64_t));
+	*apintData = val;
+	apint.data = apintData;
+	*ptr = apint;
 	assert(0);
-	return NULL
-	
+	return ptr;
 }
 
 
@@ -30,10 +36,10 @@ ApInt *apint_create_from_hex(const char *hex) {
 // Peter
 void apint_destroy(ApInt *ap) {
 	
-	int n = (int)*ap->len;
+	uint32_t n = ap->len;
 
-	for(int i = 0; i < n; i++) {
-		free(*ap->data[i]);
+	for(unint32_t i = 0; i < n; i++) {
+		free(ap->data[i]);
 	}
 	assert(0);
 }
@@ -41,9 +47,8 @@ void apint_destroy(ApInt *ap) {
 // milestone 1
 // Casey
 int apint_is_zero(const ApInt *ap) {
-	/* TODO: implement */
 	assert(0);
-	return 0;
+	return ap->data[1] == 0;
 }
 
 // milestone 1
@@ -58,9 +63,11 @@ int apint_is_negative(const ApInt *ap) {
 // if index is out-of-bounds, return 0
 // Casey
 uint64_t apint_get_bits(const ApInt *ap, unsigned n) {
-	/* TODO: implement */
+	if (n > ap->len) {
+		return 0UL;
+	}
 	assert(0);
-	return 0UL;
+	return ap->data[n];
 }
 
 // milestone 1 - only first uint64_t val
@@ -81,7 +88,12 @@ char *apint_format_as_hex(const ApInt *ap) {
 // milestone 1
 // Casey
 ApInt *apint_negate(const ApInt *ap) {
-	/* TODO: implement */
+	ApInt * neg = malloc(sizeof(ApInt));
+	uint64_t * negData = malloc(ap->len * sizeof(uint64_t));
+	for (uint32_t i = 0; i < ap->len; i++) {
+		negData[i] = ap->data[i];
+	}
+	ApInt apint = {ap->len, 1U, negData};
 	assert(0);
 	return NULL;
 }
@@ -108,4 +120,13 @@ int apint_compare(const ApInt *left, const ApInt *right) {
 	/* TODO: implement */
 	assert(0);
 	return 0;
+}
+
+// helpers for add and subtract
+ApInt *add_magnitudes(const ApInt *a, const ApInt *b) {
+
+}
+
+ApInt *subtract_magnitudes(const ApInt *a, const ApInt *b) {
+	
 }
