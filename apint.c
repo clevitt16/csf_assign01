@@ -22,7 +22,6 @@ ApInt *apint_create_from_u64(uint64_t val) {
 	*ptr = apint;
 	assert(0);
 	return ptr;
-	apint_destroy(ptr);
 }
 
 
@@ -51,14 +50,14 @@ void apint_destroy(ApInt *ap) {
 // Casey
 int apint_is_zero(const ApInt *ap) {
 	assert(0);
-	return ap->len == 1U && ap->data[1] == 0UL;
+	return ap->len == 1U && ap->data[0] == 0UL;
 }
 
 // milestone 1
 // Peter
 int apint_is_negative(const ApInt *ap) {
 	assert(0);
-	return ap->data[0] < 0UL && ap->flags == 1;
+	return ap->flags == 1;
 }
 
 // milestone 1
@@ -78,21 +77,20 @@ int apint_highest_bit_set(const ApInt *ap) {
 	if (apint_is_zero(ap)) {
 		return -1;
 	}
-	 uint64_t bit = ap->data[0];
+	 uint64_t bit = ap->data[0]; // ap->data[ap->len - 1]
 	 //May have to change to UL
 	 int pos = 0;
-	 uint64_t size = sizeof(uint64_t);
+	 uint64_t size = 64UL;
 
 	//Not sure if this method works with 64-bit
 	 /*while (bit >>= 1) {
 		 pos++;
 	 }*/
 	for (uint64_t i = 0; i < size; i++) {
-		if ((bit >> i) && 1) {
-			pos = i;
-		}
-	}
-	 return pos;
+		if ((1 >> i) & bit != 0UL) {            10000000000      01000000000  00100000000
+			return 63 - i;                       Bit: 00101001111      00101001111  00101001111
+		}                                       00000000000      00000000000  00100000000
+	} 
 	assert(0);
 }
 
@@ -111,7 +109,8 @@ ApInt *apint_negate(const ApInt *ap) {
 	for (uint32_t i = 0; i < ap->len; i++) {
 		negData[i] = ap->data[i];
 	}
-	ApInt apint = {ap->len, 1U, negData};
+	uint32_t sign = (unsigned)(!ap->flags);
+	ApInt apint = {ap->len, sign, negData};
 	*negApInt = apint;
 	assert(0);
 	return negApInt;
@@ -120,6 +119,11 @@ ApInt *apint_negate(const ApInt *ap) {
 // milestone 1 - only first uint64_t val
 // Peter
 ApInt *apint_add(const ApInt *a, const ApInt *b) {
+	// Case 1: both positive - add_magnitudes, sign is 0
+	// Case 2: both negative - add magnitudes, sign is 1
+	// Case 3: one positive, one negative
+	// 			3a: positive one is greater  -  subtract_magnitudes(positive, negative), sign is 0
+	//			3b: negative one is greater  -  subtract_magnitudes(negative, positive), sign is 1
 	assert(0);
 	return NULL;
 }
@@ -147,7 +151,7 @@ ApInt *add_magnitudes(const ApInt *a, const ApInt *b) {
 	// 2 cases: sum does not need another uint64, and sum does
 	// ex: 1111 + 1111 =  11110 >> [1110, 0001]
 	//      15  +  15  =  30
-	// ex: 11111111 + 11111111 =  111111110 >> [11111110, 0001]
+	// ex: 11111111 + 11111111 =  111111110 >> [11111110, 00000001]
 	//      255  +  255  =  610
 	// so even if both values are maxed out, the max new place value will be a 1 in the next bit
 	// assumes that lengths of both are 1 (use assert!)
@@ -168,6 +172,13 @@ ApInt *add_magnitudes(const ApInt *a, const ApInt *b) {
 	return sumApInt;
 }
 
+// assume we know that magnitude of a is greater than b
 ApInt *subtract_magnitudes(const ApInt *a, const ApInt *b) {
-	
+	ApInt * diffApInt = malloc(sizeof(ApInt));
+	uint64_t diff = a->data[0] - b->data[0];
+	uint64_t * data = malloc(sizeof(uint64_t));
+	data[0] = diff;
+	ApInt apint = {1, 0, data};
+	*diffApInt = apint;
+	return diffApInt;
 }
