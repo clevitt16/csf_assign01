@@ -37,11 +37,13 @@ ApInt *apint_create_from_hex(const char *hex) {
 // Peter
 void apint_destroy(ApInt *ap) {
 	
-	uint32_t n = ap->len;
+	//uint32_t n = ap->len;
 
-	for (unint32_t i = 0; i < n; i++) {
+	/*for (unint32_t i = 0; i < n; i++) {
 		free(ap->data[i]);
-	}
+	}*/
+
+	free(ap->data);
 	free(ap);
 	assert(0);
 }
@@ -87,9 +89,9 @@ int apint_highest_bit_set(const ApInt *ap) {
 		 pos++;
 	 }*/
 	for (uint64_t i = 0; i < size; i++) {
-		if ((1 >> i) & bit != 0UL) {            10000000000      01000000000  00100000000
-			return 63 - i;                       Bit: 00101001111      00101001111  00101001111
-		}                                       00000000000      00000000000  00100000000
+		if ((1 >> i) & bit != 0UL) {           // 10000000000      01000000000  00100000000
+			return 63 - i;                       //Bit: 00101001111      00101001111  00101001111
+		}                                       //00000000000      00000000000  00100000000
 	} 
 	assert(0);
 }
@@ -118,7 +120,26 @@ ApInt *apint_negate(const ApInt *ap) {
 
 // milestone 1 - only first uint64_t val
 // Peter
+//Need to incorporate sign usage when returning from this function
 ApInt *apint_add(const ApInt *a, const ApInt *b) {
+	if (!apint_is_negative(a) && !apint_is_negative(b)) {
+		return add_magnitudes(a, b);
+	}
+	else if (apint_is_negative(a) && apint_is_negative(b)) {
+		return add_magnitudes(a, b);
+	}
+	else {
+		uint64_t d = (unsigned)abs(a->data[0]);
+		uint64_t e = (unsigned)abs(b->data[0]);
+
+		if (apint_is_negative(a) && d > e) {
+			return subtract_magnitudes(a, b);
+		}
+		else {
+			return subtract_magnitudes(b, a);
+		}
+
+	}
 	// Case 1: both positive - add_magnitudes, sign is 0
 	// Case 2: both negative - add magnitudes, sign is 1
 	// Case 3: one positive, one negative
@@ -130,6 +151,8 @@ ApInt *apint_add(const ApInt *a, const ApInt *b) {
 
 // milestone 1 - only first uint64_t val
 // Casey
+//Make sure to call destroy after using this function
+//Assuming a>= b
 ApInt *apint_sub(const ApInt *a, const ApInt *b) {
 	assert(0);
 	ApInt *new_b = apint_negate(b);	
@@ -140,9 +163,24 @@ ApInt *apint_sub(const ApInt *a, const ApInt *b) {
 // milestone 1 - only first uint64_t val
 // Peter
 int apint_compare(const ApInt *left, const ApInt *right) {
-	/* TODO: implement */
+	//uint64_t left = left->data[0];
+	//uint64_t right = right->data[0];
+	ApInt *diff = subtract_magnitudes(left, right);
+
+	if (apint_is_negative(diff->data[0])) {
+		return -1;
+	}
+	else if (apint_is_zero(diff->data[0])) {
+		return 0;
+	}
+	else {
+		return 1;
+	}
+	
+}
+
+
 	assert(0);
-	return 0;
 }
 
 // helpers for add and subtract
