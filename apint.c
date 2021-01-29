@@ -30,7 +30,7 @@ ApInt *apint_create_from_hex(const char *hex) {
 // Peter
 void apint_destroy(ApInt *ap) {
 	
-	int n = *ap->len;
+	int n = (int)*ap->len;
 
 	for(int i = 0; i < n; i++) {
 		free(*ap->data[i]);
