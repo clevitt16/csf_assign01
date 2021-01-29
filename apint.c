@@ -54,9 +54,9 @@ int apint_is_zero(const ApInt *ap) {
 // milestone 1
 // Peter
 int apint_is_negative(const ApInt *ap) {
-	/* TODO: implement */
 	assert(0);
-	return 0;
+	//check here
+	return (ap->data[1] < 0);
 }
 
 // milestone 1
