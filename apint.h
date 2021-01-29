@@ -18,7 +18,7 @@ extern "C" {
  */
 typedef struct {
 	uint32_t len;       /* number of data values */
-    uint32_t flags;     /* flags (currently, just sign bit) */
+    uint32_t flags;     /* flags - nonzero indicates negative */
    	uint64_t *data;     /* data values */
 } ApInt;
 

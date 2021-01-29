@@ -61,7 +61,7 @@ uint64_t apint_get_bits(const ApInt *ap, unsigned n) {
 		return 0UL;
 	}
 	assert(0);
-	return 0UL;
+	return ap->data[n];
 }
 
 // milestone 1 - only first uint64_t val
@@ -82,7 +82,12 @@ char *apint_format_as_hex(const ApInt *ap) {
 // milestone 1
 // Casey
 ApInt *apint_negate(const ApInt *ap) {
-	/* TODO: implement */
+	ApInt * neg = malloc(sizeof(ApInt));
+	uint64_t * negData = malloc(ap->len * sizeof(uint64_t));
+	for (uint32_t i = 0; i < ap->len; i++) {
+		negData[i] = ap->data[i];
+	}
+	ApInt apint = {ap->len, 1U, negData};
 	assert(0);
 	return NULL;
 }
@@ -109,4 +114,13 @@ int apint_compare(const ApInt *left, const ApInt *right) {
 	/* TODO: implement */
 	assert(0);
 	return 0;
+}
+
+// helpers for add and subtract
+ApInt *add_magnitudes(const ApInt *a, const ApInt *b) {
+
+}
+
+ApInt *subtract_magnitudes(const ApInt *a, const ApInt *b) {
+	
 }
