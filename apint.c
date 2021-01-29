@@ -12,9 +12,16 @@
 // milestone 1
 // Casey
 ApInt *apint_create_from_u64(uint64_t val) {
-	/* TODO: implement */
+	ApInt * ptr = malloc(sizeof(ApInt));
+	ApInt apint;
+	apint.len = 1;
+	apint.flags = 0;
+	uint64_t * apintData = malloc(sizeof(uint64_t));
+	*apintData = val;
+	apint.data = apintData;
+	*ptr = apint;
 	assert(0);
-	return NULL;
+	return ptr;
 }
 
 // milestone 2
@@ -34,9 +41,8 @@ void apint_destroy(ApInt *ap) {
 // milestone 1
 // Casey
 int apint_is_zero(const ApInt *ap) {
-	/* TODO: implement */
 	assert(0);
-	return 0;
+	return ap->data[1] == 0;
 }
 
 // milestone 1
@@ -51,7 +57,9 @@ int apint_is_negative(const ApInt *ap) {
 // if index is out-of-bounds, return 0
 // Casey
 uint64_t apint_get_bits(const ApInt *ap, unsigned n) {
-	/* TODO: implement */
+	if (n > ap->len) {
+		return 0UL;
+	}
 	assert(0);
 	return 0UL;
 }
