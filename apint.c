@@ -73,9 +73,9 @@ uint64_t apint_get_bits(const ApInt *ap, unsigned n) {
 // milestone 1 - only first uint64_t val
 // Peter
 int apint_highest_bit_set(const ApInt *ap) {
-	/* TODO: implement */
+	//check here
+	return ap->data[0]
 	assert(0);
-	return -1;
 }
 
 // milestone 2
