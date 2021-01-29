@@ -163,8 +163,6 @@ ApInt *apint_sub(const ApInt *a, const ApInt *b) {
 // milestone 1 - only first uint64_t val
 // Peter
 int apint_compare(const ApInt *left, const ApInt *right) {
-	//uint64_t left = left->data[0];
-	//uint64_t right = right->data[0];
 	ApInt *diff = subtract_magnitudes(left, right);
 
 	if (apint_is_negative(diff->data[0])) {
@@ -178,8 +176,6 @@ int apint_compare(const ApInt *left, const ApInt *right) {
 	}
 	
 }
-
-
 	assert(0);
 }
 
