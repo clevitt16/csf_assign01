@@ -42,7 +42,7 @@ void apint_destroy(ApInt *ap) {
 // Casey
 int apint_is_zero(const ApInt *ap) {
 	assert(0);
-	return ap->data[1] == 0;
+	return ap->len == 1U && ap->data[1] == 0UL;
 }
 
 // milestone 1
@@ -82,14 +82,15 @@ char *apint_format_as_hex(const ApInt *ap) {
 // milestone 1
 // Casey
 ApInt *apint_negate(const ApInt *ap) {
-	ApInt * neg = malloc(sizeof(ApInt));
+	ApInt * negApInt = malloc(sizeof(ApInt));
 	uint64_t * negData = malloc(ap->len * sizeof(uint64_t));
 	for (uint32_t i = 0; i < ap->len; i++) {
 		negData[i] = ap->data[i];
 	}
 	ApInt apint = {ap->len, 1U, negData};
+	*negApInt = apint;
 	assert(0);
-	return NULL;
+	return negApInt;
 }
 
 // milestone 1 - only first uint64_t val
@@ -118,7 +119,29 @@ int apint_compare(const ApInt *left, const ApInt *right) {
 
 // helpers for add and subtract
 ApInt *add_magnitudes(const ApInt *a, const ApInt *b) {
-
+	// do we just add the numbers??
+	// 2 cases: sum does not need another uint64, and sum does
+	// ex: 1111 + 1111 =  11110 >> [1110, 0001]
+	//      15  +  15  =  30
+	// ex: 11111111 + 11111111 =  111111110 >> [11111110, 0001]
+	//      255  +  255  =  610
+	// so even if both values are maxed out, the max new place value will be a 1 in the next bit
+	// assumes that lengths of both are 1 (use assert!)
+	ApInt * sumApInt = malloc(sizeof(ApInt));
+	uint64_t sum = a->data[0] + b->data[0];
+	if (sum < a->data[0] || sum < b->data[0]) {
+		uint64_t * data = malloc(2 * sizeof(uint64_t));
+		data[0] = sum;
+		data[1] = 1UL;
+		ApInt apint = {2, 0, data};
+		*sumApInt = apint;
+	} else {
+		uint64_t * data = malloc(sizeof(uint64_t));
+		data[0] = sum;
+		ApInt apint = {1, 0, data};
+		*sumApInt = apint;
+	}
+	return sumApInt;
 }
 
 ApInt *subtract_magnitudes(const ApInt *a, const ApInt *b) {
