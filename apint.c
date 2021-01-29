@@ -40,7 +40,7 @@ void apint_destroy(ApInt *ap) {
 	
 	uint32_t n = ap->len;
 
-	for(unint32_t i = 0; i < n; i++) {
+	for (unint32_t i = 0; i < n; i++) {
 		free(ap->data[i]);
 	}
 	free(ap);
