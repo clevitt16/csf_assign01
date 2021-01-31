@@ -30,19 +30,11 @@ ApInt *apint_create_from_hex(const char *hex) {
 	/* TODO: implement */
 	assert(0);
 	return NULL;
-	//call apint_destroy
 }
 
 // milestone 1
 // Peter
 void apint_destroy(ApInt *ap) {
-	
-	//uint32_t n = ap->len;
-
-	/*for (unint32_t i = 0; i < n; i++) {
-		free(ap->data[i]);
-	}*/
-
 	free(ap->data);
 	free(ap);
 	assert(0);
@@ -51,7 +43,7 @@ void apint_destroy(ApInt *ap) {
 // milestone 1
 // Casey
 int apint_is_zero(const ApInt *ap) {
-	assert(0);
+	assert(ap->len >= 1);
 	return ap->len == 1U && ap->data[0] == 0UL;
 }
 
@@ -59,17 +51,17 @@ int apint_is_zero(const ApInt *ap) {
 // Peter
 int apint_is_negative(const ApInt *ap) {
 	assert(0);
-	return ap->flags == 1;
+	return ap->flags == 1 && !apint_is_zero(ap);
 }
 
 // milestone 1
 // if index is out-of-bounds, return 0
 // Casey
 uint64_t apint_get_bits(const ApInt *ap, unsigned n) {
+	assert(ap->len >= 1);
 	if (n > ap->len) {
 		return 0UL;
 	}
-	assert(0);
 	return ap->data[n];
 }
 
@@ -79,9 +71,7 @@ int apint_highest_bit_set(const ApInt *ap) {
 	if (apint_is_zero(ap)) {
 		return -1;
 	}
-	 uint64_t bit = ap->data[0]; // ap->data[ap->len - 1]
-	 //May have to change to UL
-	 int pos = 0;
+	 uint64_t bits = ap->data[ap->len - 1]
 	 uint64_t size = 64UL;
 
 	//Not sure if this method works with 64-bit
@@ -89,18 +79,37 @@ int apint_highest_bit_set(const ApInt *ap) {
 		 pos++;
 	 }*/
 	for (uint64_t i = 0; i < size; i++) {
-		if ((1 >> i) & bit != 0UL) {           // 10000000000      01000000000  00100000000
+		if ((1 >> i) & bits != 0UL) {           // 10000000000      01000000000  00100000000
 			return 63 - i;                       //Bit: 00101001111      00101001111  00101001111
 		}                                       //00000000000      00000000000  00100000000
 	} 
-	assert(0);
 }
 
-// milestone 2
+// Casey
+// milestone 2 - only for first uint64_t val
 char *apint_format_as_hex(const ApInt *ap) {
-	/* TODO: implement */
-	assert(0);
-	return NULL;
+	uint64_t num = ap->data[0];
+	// the max hex values needed for a 64-bit value is 16
+	char backwardsHex[16 * ap->len];
+	uint32_t hexLength = 0;
+	while(num > 0) {
+		char hexDigit = num % 16;
+		if (hexDigit <= 9) {
+			backwardsHex[hexLength] = hexDigit + '0';
+		}
+		else {
+			backwardsHex[hexLength] = hexDigit - (char)10 + 'a'
+		}
+		hexLength++;
+		num -= hexDigit;
+		num = num/16;
+	}
+	char * forwardsHex = malloc(hexLength * sizeof(char) + 1)
+	for (uint32_t i = 0; i < hexLength; i++) {
+		forwardsHex[i] = backwardsHex[hexLength - 1 - i];
+	}
+	forwardsHex[hexLength] = '\0';
+	return forwardsHex;
 }
 
 // milestone 1
@@ -111,10 +120,14 @@ ApInt *apint_negate(const ApInt *ap) {
 	for (uint32_t i = 0; i < ap->len; i++) {
 		negData[i] = ap->data[i];
 	}
-	uint32_t sign = (unsigned)(!ap->flags);
+	uint32_t sign;
+	if (apint_is_zero(ap)) {
+		sign = ap->flags;
+	} else {
+		sign = (unsigned)(!ap->flags);
+	}
 	ApInt apint = {ap->len, sign, negData};
 	*negApInt = apint;
-	assert(0);
 	return negApInt;
 }
 
@@ -151,8 +164,7 @@ ApInt *apint_add(const ApInt *a, const ApInt *b) {
 
 // milestone 1 - only first uint64_t val
 // Casey
-//Make sure to call destroy after using this function
-//Assuming a>= b
+//Assuming a>= b      ???
 ApInt *apint_sub(const ApInt *a, const ApInt *b) {
 	assert(0);
 	ApInt *new_b = apint_negate(b);	
@@ -163,6 +175,22 @@ ApInt *apint_sub(const ApInt *a, const ApInt *b) {
 // milestone 1 - only first uint64_t val
 // Peter
 int apint_compare(const ApInt *left, const ApInt *right) {
+	int leftSign = apint_is_negative(left);
+	int rightSign = apint_is_negative(right);
+	if (leftSign != rightSign) { // where one is 0 and the other is 1
+		return rightSign - leftSign;
+	} 
+	// apints have same sign
+	if (left->len != right->len) {
+		if (leftSign == 0) {
+			return left->len - right->len;
+		}
+		return right->len - left->len;
+	}
+	// apints have the same length
+	return left->data[0] - right->data[0]; // to generalize, can start at most significant val and move down
+
+
 	ApInt *diff = subtract_magnitudes(left, right);
 
 	if (apint_is_negative(diff->data[0])) {
@@ -179,16 +207,9 @@ int apint_compare(const ApInt *left, const ApInt *right) {
 	assert(0);
 }
 
+// only first uint64_t val
 // helpers for add and subtract
 ApInt *add_magnitudes(const ApInt *a, const ApInt *b) {
-	// do we just add the numbers??
-	// 2 cases: sum does not need another uint64, and sum does
-	// ex: 1111 + 1111 =  11110 >> [1110, 0001]
-	//      15  +  15  =  30
-	// ex: 11111111 + 11111111 =  111111110 >> [11111110, 00000001]
-	//      255  +  255  =  610
-	// so even if both values are maxed out, the max new place value will be a 1 in the next bit
-	// assumes that lengths of both are 1 (use assert!)
 	ApInt * sumApInt = malloc(sizeof(ApInt));
 	uint64_t sum = a->data[0] + b->data[0];
 	if (sum < a->data[0] || sum < b->data[0]) {
@@ -206,6 +227,7 @@ ApInt *add_magnitudes(const ApInt *a, const ApInt *b) {
 	return sumApInt;
 }
 
+// only first uint64_t val
 // assume we know that magnitude of a is greater than b
 ApInt *subtract_magnitudes(const ApInt *a, const ApInt *b) {
 	ApInt * diffApInt = malloc(sizeof(ApInt));
