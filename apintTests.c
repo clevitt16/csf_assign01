@@ -32,9 +32,11 @@ void cleanup(TestObjs *objs);
 void testCreateFromU64(TestObjs *objs);
 void testApintIsZero(TestObjs *objs);
 void testApintIsNegative(TestObjs *objs);
+void testApintGetBits(TestObjs *objs);
 void testHighestBitSet(TestObjs *objs);
 void testCompare(TestObjs *objs);
 void testFormatAsHex(TestObjs *objs);
+void testNegate(TestObjs *objs);
 void testAdd(TestObjs *objs);
 void testSub(TestObjs *objs);
 /* TODO: add more test function prototypes */
@@ -53,9 +55,11 @@ int main(int argc, char **argv) {
 	TEST(testCreateFromU64);
 	TEST(testApintIsZero);
 	TEST(testApintIsNegative);
+	TEST(testApintGetBits);
 	TEST(testHighestBitSet);
 	TEST(testCompare);
 	TEST(testFormatAsHex);
+	TEST(testNegate);
 	TEST(testAdd);
 	TEST(testSub);
 	/* TODO: use TEST macro to execute more test functions */
@@ -98,6 +102,10 @@ void testHighestBitSet(TestObjs *objs) {
 	ASSERT(0 == apint_highest_bit_set(objs->ap1));
 	ASSERT(26 == apint_highest_bit_set(objs->ap110660361));
 	ASSERT(63 == apint_highest_bit_set(objs->max1));
+}
+
+void testApintGetBits(TestObjs *objs) {
+
 }
 
 void testApintIsZero(TestObjs *objs) {
@@ -143,6 +151,10 @@ void testFormatAsHex(TestObjs *objs) {
 
 	ASSERT(0 == strcmp("ffffffffffffffff", (s = apint_format_as_hex(objs->max1))));
 	free(s);
+}
+
+void testNegate(TestObjs *objs) {
+
 }
 
 void testAdd(TestObjs *objs) {

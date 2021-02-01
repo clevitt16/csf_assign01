@@ -139,32 +139,39 @@ ApInt *apint_add(const ApInt *a, const ApInt *b) {
 		return add_magnitudes(a, b);
 	}
 	else if (apint_is_negative(a) && apint_is_negative(b)) {
-		return add_magnitudes(a, b);
+		ApInt *sum = add_magnitudes(a, b);
+		sum->flags = 1;
+		return sum;
 	}
 	else {
-		uint64_t d = (unsigned)abs(a->data[0]);
-		uint64_t e = (unsigned)abs(b->data[0]);
-
-		if (apint_is_negative(a) && d > e) {
-			return subtract_magnitudes(a, b);
-		}
-		else {
-			return subtract_magnitudes(b, a);
+		uint64_t d = (unsigned)a->data[0];
+		uint64_t e = (unsigned)b->data[0];
+		ApInt *diff;
+		if (d > e) { // magnitude of a is greater
+			diff = subtract_magnitudes(a, b);
+			if (apint_is_negative(a)) {
+				diff->flags = 1;
+			}
+			return diff;
+		} else { // magnitude of b is greater
+			diff = subtract_magnitudes(b, a);
+			if (d == e) {
+				return diff;
+			}
+			if (apint_is_negative(b)) {
+				diff->flags = 1;
+			}
+			return diff;
 		}
 
 	}
-	// Case 1: both positive - add_magnitudes, sign is 0
-	// Case 2: both negative - add magnitudes, sign is 1
-	// Case 3: one positive, one negative
-	// 			3a: positive one is greater  -  subtract_magnitudes(positive, negative), sign is 0
-	//			3b: negative one is greater  -  subtract_magnitudes(negative, positive), sign is 1
+
 	assert(0);
 	return NULL;
 }
 
 // milestone 1 - only first uint64_t val
 // Casey
-//Assuming a>= b      ???
 ApInt *apint_sub(const ApInt *a, const ApInt *b) {
 	assert(0);
 	ApInt *new_b = apint_negate(b);	
@@ -191,20 +198,7 @@ int apint_compare(const ApInt *left, const ApInt *right) {
 	return left->data[0] - right->data[0]; // to generalize, can start at most significant val and move down
 
 
-	ApInt *diff = subtract_magnitudes(left, right);
-
-	if (apint_is_negative(diff->data[0])) {
-		return -1;
-	}
-	else if (apint_is_zero(diff->data[0])) {
-		return 0;
-	}
-	else {
-		return 1;
-	}
 	
-}
-	assert(0);
 }
 
 // only first uint64_t val
