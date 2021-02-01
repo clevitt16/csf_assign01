@@ -20,7 +20,6 @@ ApInt *apint_create_from_u64(uint64_t val) {
 	*apintData = val;
 	apint.data = apintData;
 	*ptr = apint;
-	assert(0);
 	return ptr;
 }
 
@@ -28,7 +27,7 @@ ApInt *apint_create_from_u64(uint64_t val) {
 // milestone 2
 ApInt *apint_create_from_hex(const char *hex) {
 	/* TODO: implement */
-	assert(0);
+	// assert(0);
 	return NULL;
 }
 
@@ -37,7 +36,6 @@ ApInt *apint_create_from_hex(const char *hex) {
 void apint_destroy(ApInt *ap) {
 	free(ap->data);
 	free(ap);
-	assert(0);
 }
 
 // milestone 1
@@ -50,7 +48,7 @@ int apint_is_zero(const ApInt *ap) {
 // milestone 1
 // Peter
 int apint_is_negative(const ApInt *ap) {
-	assert(0);
+	// assert(0);
 	return ap->flags == 1 && !apint_is_zero(ap);
 }
 
@@ -79,7 +77,7 @@ int apint_highest_bit_set(const ApInt *ap) {
 		 pos++;
 	 }*/
 	for (uint64_t i = 0; i < size; i++) {
-		if ((1 >> i) & bits != 0UL) {           // 10000000000      01000000000  00100000000
+		if (((1 >> i) & bits) != 0UL) {           // 10000000000      01000000000  00100000000
 			return 63 - i;                       //Bit: 00101001111      00101001111  00101001111
 		}                                       //00000000000      00000000000  00100000000
 	}
@@ -167,14 +165,13 @@ ApInt *apint_add(const ApInt *a, const ApInt *b) {
 
 	}
 
-	assert(0);
+	// assert(0);
 	return NULL;
 }
 
 // milestone 1 - only first uint64_t val
 // Casey
 ApInt *apint_sub(const ApInt *a, const ApInt *b) {
-	assert(0);
 	ApInt *new_b = apint_negate(b);	
 	return apint_add(a, new_b);
 	
