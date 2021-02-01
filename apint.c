@@ -15,8 +15,8 @@
 ApInt *apint_create_from_u64(uint64_t val) {
 	ApInt * ptr = malloc(sizeof(ApInt));
 	ApInt apint;
-	apint.len = 1;
-	apint.flags = 0;
+	apint.len = 1U;
+	apint.flags = 0U;
 	uint64_t * apintData = malloc(sizeof(uint64_t));
 	*apintData = val;
 	apint.data = apintData;
@@ -57,8 +57,8 @@ int apint_is_negative(const ApInt *ap) {
 // if index is out-of-bounds, return 0
 // Casey
 uint64_t apint_get_bits(const ApInt *ap, unsigned n) {
-	//assert(ap->len >= 1UL);
-	if (n > ap->len) {
+	assert(ap->len >= 1U);
+	if (n >= ap->len) {
 		return 0UL;
 	}
 	return ap->data[n];
@@ -209,12 +209,12 @@ ApInt *add_magnitudes(const ApInt *a, const ApInt *b) {
 		uint64_t * data = malloc(2 * sizeof(uint64_t));
 		data[0] = sum;
 		data[1] = 1UL;
-		ApInt apint = {2, 0, data};
+		ApInt apint = {2U, 0U, data};
 		*sumApInt = apint;
 	} else {
 		uint64_t * data = malloc(sizeof(uint64_t));
 		data[0] = sum;
-		ApInt apint = {1, 0, data};
+		ApInt apint = {1U, 0U, data};
 		*sumApInt = apint;
 	}
 	return sumApInt;
