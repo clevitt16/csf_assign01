@@ -161,27 +161,27 @@ void testFormatAsHex(TestObjs *objs) {
 }
 
 void testNegate(TestObjs *objs) {
-	Apint *result;
+	ApInt *result;
 	
 	result = apint_negate(objs->ap0);
 	ASSERT(0 == result->data[0]);
-	apint_destory(result);
+	apint_destroy(result);
 
 	result = apint_negate(objs->ap1);
 	ASSERT(1 == result->data[0]);
 	ASSERT(result->flags == 1);
-	apint_destory(result);
+	apint_destroy(result);
 
 	result = apint_negate(objs->minus1);
 	ASSERT(1 == result->data[0]);
 	ASSERT(result->flags == 0);
-	apint_destory(result);
+	apint_destroy(result);
 
 
 	result = apint_negate(objs->ap110660361);
 	ASSERT(11066036 == result->data[0]);
 	ASSERT(result->flags == 1);
-	apint_destory(result);
+	apint_destroy(result);
 
 
 }
