@@ -94,7 +94,8 @@ int apint_highest_bit_set(const ApInt *ap) {
 char *apint_format_as_hex(const ApInt *ap) {
 	if (apint_is_zero(ap)) {
 		char * zeroString = malloc(2 * sizeof(char));
-		*zeroString = "0";
+		zeroString[0] = '0';
+		zeroString[1] = '\0';
 		return zeroString;
 	}
 	uint64_t num = ap->data[0];
@@ -153,34 +154,26 @@ ApInt *apint_add(const ApInt *a, const ApInt *b) {
 	}
 	else if (apint_is_negative(a) && apint_is_negative(b)) {
 		ApInt *sum = add_magnitudes(a, b);
-		sum->flags = 1;
+		sum->flags = 1UL;
 		return sum;
 	}
-	else {
-		uint64_t d = (unsigned)a->data[0];
-		uint64_t e = (unsigned)b->data[0];
-		ApInt *diff;
-		if (d > e) { // magnitude of a is greater
-			diff = subtract_magnitudes(a, b);
-			if (apint_is_negative(a)) {
-				diff->flags = 1;
-			}
-			return diff;
-		} else { // magnitude of b is greater
-			diff = subtract_magnitudes(b, a);
-			if (d == e) {
-				return diff;
-			}
-			if (apint_is_negative(b)) {
-				diff->flags = 1;
-			}
-			return diff;
+	// one is positive, one is negative
+	uint64_t d = a->data[0];
+	uint64_t e = b->data[0];
+	ApInt *diff;
+	if (d > e) { // magnitude of a is greater
+		diff = subtract_magnitudes(a, b);
+		if (apint_is_negative(a)) {
+			diff->flags = 1UL;
 		}
-
+		return diff;
+	}  // magnitude of b is greater
+	diff = subtract_magnitudes(b, a);
+	if (apint_is_negative(b) && d != e) {
+		diff->flags = 1UL;
 	}
+	return diff;
 
-	// assert(0);
-	return NULL;
 }
 
 // milestone 1 - only first uint64_t val
