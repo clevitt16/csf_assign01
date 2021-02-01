@@ -105,7 +105,13 @@ void testHighestBitSet(TestObjs *objs) {
 }
 
 void testApintGetBits(TestObjs *objs) {
-
+	ASSERT(0UL == apint_get_bits(objs->ap0, 1));
+	ASSERT(0UL == apint_get_bits(objs->ap110660361, 2));
+	ASSERT(0UL == apint_get_bits(objs->max1, 1));
+	ASSERT(0UL == apint_get_bits(objs->ap0, 0));
+	ASSERT(1UL == apint_get_bits(objs->ap1, 0));
+	ASSERT(1UL == apint_get_bits(objs->minus1, 0));
+	ASSERT(110660361UL == apint_get_bits(objs->ap110660361, 0));
 }
 
 void testApintIsZero(TestObjs *objs) {

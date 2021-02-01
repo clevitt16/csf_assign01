@@ -32,12 +32,14 @@ ApInt *apint_create_from_hex(const char *hex) {
 	return NULL;
 }
 
+
 // milestone 1
 // Peter
 void apint_destroy(ApInt *ap) {
 	free(ap->data);
 	free(ap);
 }
+
 
 // milestone 1
 // Casey
@@ -46,6 +48,7 @@ int apint_is_zero(const ApInt *ap) {
 	return ap->len == 1U && ap->data[0] == 0UL;
 }
 
+
 // milestone 1
 // Peter
 int apint_is_negative(const ApInt *ap) {
@@ -53,16 +56,18 @@ int apint_is_negative(const ApInt *ap) {
 	return ap->flags == 1 && !apint_is_zero(ap);
 }
 
+
 // milestone 1
 // if index is out-of-bounds, return 0
 // Casey
 uint64_t apint_get_bits(const ApInt *ap, unsigned n) {
 	assert(ap->len >= 1);
-	if (n > ap->len) {
+	if (n >= ap->len) {
 		return 0UL;
 	}
 	return ap->data[n];
 }
+
 
 // milestone 1 - only first uint64_t val
 // Peter
@@ -74,11 +79,7 @@ int apint_highest_bit_set(const ApInt *ap) {
 	 uint64_t size = 64UL;
 
 	for (uint64_t i = 0; i < size; i++) {
-		if (i == 63UL) {
-			printf("%ld", bits);
-			printf("%ld", 0x7FFFFFF76B48C000 >> i);
-		}
-		if (((0x8000000000000000 >> i) & bits) != 0) {          
+		if (((0x8000000000000000UL >> i) & bits) != 0) {          
 			return 63 - i;                                       
 		}           
 	}
@@ -94,21 +95,23 @@ char *apint_format_as_hex(const ApInt *ap) {
 		zeroString[1] = '\0';
 		return zeroString;
 	}
-	uint64_t num = ap->data[0];
 	// the max hex values needed for a 64-bit value is 16, plus sign character
 	char backwardsHex[16 * ap->len + 1];
-	uint32_t hexLength = 0;
-	while(num > 0) {
-		char hexDigit = num % 16;
-		if (hexDigit <= 9) {
-			backwardsHex[hexLength] = hexDigit + '0';
+	uint32_t hexLength = 0U;
+	for (uint32_t i = 0; i < ap->len; i++) {
+		uint64_t num = ap->data[i];
+		while(num > 0) {
+			char hexDigit = num % 16;
+			if (hexDigit <= 9) {
+				backwardsHex[hexLength] = hexDigit + '0';
+			}
+			else {
+				backwardsHex[hexLength] = hexDigit - (char)10 + 'a';
+			}
+			hexLength++;
+			num -= hexDigit;
+			num = num/16;
 		}
-		else {
-			backwardsHex[hexLength] = hexDigit - (char)10 + 'a';
-		}
-		hexLength++;
-		num -= hexDigit;
-		num = num/16;
 	}
 	if (apint_is_negative(ap)) {
 		backwardsHex[hexLength] = '-';
@@ -122,6 +125,7 @@ char *apint_format_as_hex(const ApInt *ap) {
 	return forwardsHex;
 }
 
+
 // milestone 1
 // Casey
 ApInt *apint_negate(const ApInt *ap) {
@@ -134,7 +138,7 @@ ApInt *apint_negate(const ApInt *ap) {
 	if (apint_is_zero(ap)) {
 		sign = ap->flags;
 	} else {
-		sign = (unsigned)(!ap->flags);
+		sign = (uint32_t)(!(ap->flags));
 	}
 	ApInt apint = {ap->len, sign, negData};
 	*negApInt = apint;
@@ -169,15 +173,16 @@ ApInt *apint_add(const ApInt *a, const ApInt *b) {
 		diff->flags = 1UL;
 	}
 	return diff;
-
 }
+
 
 // milestone 1 - only first uint64_t val
 // Casey
 ApInt *apint_sub(const ApInt *a, const ApInt *b) {
 	ApInt *new_b = apint_negate(b);	
-	return apint_add(a, new_b);
-	
+	ApInt *diff = apint_add(a, new_b);
+	apint_destroy(new_b);
+	return diff;
 }
 
 // milestone 1 - only first uint64_t val
