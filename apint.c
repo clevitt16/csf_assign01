@@ -99,6 +99,13 @@ char *apint_format_as_hex(const ApInt *ap) {
 	uint32_t hexLength = 0U;
 	for (uint32_t i = 0; i < ap->len; i++) {
 		uint64_t num = ap->data[i];
+		if (num == 0UL) {
+			for (int j = 0; i < 16; j++) {
+				backwardsHex[hexLength] = '0';
+				hexLength++;
+			}
+			continue;
+		}
 		while(num > 0) {
 			char hexDigit = num % 16;
 			if (hexDigit <= 9) {
