@@ -71,7 +71,7 @@ int apint_highest_bit_set(const ApInt *ap) {
 	if (apint_is_zero(ap)) {
 		return -1;
 	}
-	 uint64_t bits = ap->data[ap->len - 1]
+	 uint64_t bits = ap->data[ap->len - 1];
 	 uint64_t size = 64UL;
 
 	//Not sure if this method works with 64-bit
@@ -82,7 +82,8 @@ int apint_highest_bit_set(const ApInt *ap) {
 		if ((1 >> i) & bits != 0UL) {           // 10000000000      01000000000  00100000000
 			return 63 - i;                       //Bit: 00101001111      00101001111  00101001111
 		}                                       //00000000000      00000000000  00100000000
-	} 
+	}
+	return 0; 
 }
 
 // Casey
@@ -98,13 +99,13 @@ char *apint_format_as_hex(const ApInt *ap) {
 			backwardsHex[hexLength] = hexDigit + '0';
 		}
 		else {
-			backwardsHex[hexLength] = hexDigit - (char)10 + 'a'
+			backwardsHex[hexLength] = hexDigit - (char)10 + 'a';
 		}
 		hexLength++;
 		num -= hexDigit;
 		num = num/16;
 	}
-	char * forwardsHex = malloc(hexLength * sizeof(char) + 1)
+	char * forwardsHex = malloc(hexLength * sizeof(char) + 1);
 	for (uint32_t i = 0; i < hexLength; i++) {
 		forwardsHex[i] = backwardsHex[hexLength - 1 - i];
 	}
