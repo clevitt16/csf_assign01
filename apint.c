@@ -1,7 +1,9 @@
 /*
  * CSF Assignment 1
- * Arbitrary-precision integer data type
+ * Arbitrary-precision integer data type operations
  * Function implementations
+ * Casey Levitt and Peter Novello
+ * clevitt1@jhu.edu and pnovell1@jhu.edu
  */
 
 #include <stdlib.h>
@@ -32,8 +34,13 @@ ApInt *apint_create_from_hex(const char *hex) {
 	return NULL;
 }
 
-// milestone 1
-// Peter
+/*
+ * Frees any allocated memory associated with an ApInt object
+ * 
+ * Parameters:
+ * 	ap - a pointer to an ApInt object
+ * 
+ */
 void apint_destroy(ApInt *ap) {
 	free(ap->data);
 	free(ap);
@@ -46,10 +53,20 @@ int apint_is_zero(const ApInt *ap) {
 	return ap->len == 1U && ap->data[0] == 0UL;
 }
 
-// milestone 1
-// Peter
+/*
+ * Determines whether or not an ApInt object represents a negative value,
+ * which is useful when performing arithmetic operations such as addition
+ * and subtraction
+ * 
+ * Parameters:
+ * 	ap - a pointer to an ApInt object
+ * 
+ * Returns:
+ * 	0 - if the value is not negative
+ *  1 - if the value is negative
+ * 
+ */
 int apint_is_negative(const ApInt *ap) {
-	// assert(0);
 	return ap->flags == 1 && !apint_is_zero(ap);
 }
 
@@ -64,8 +81,19 @@ uint64_t apint_get_bits(const ApInt *ap, unsigned n) {
 	return ap->data[n];
 }
 
-// milestone 1 - only first uint64_t val
-// Peter
+/*
+ * Determines the highest bit set in the represntation of the 64-bit
+ * value stored in the first element of the data field for an ApInt
+ * object.
+ * 
+ * Parameters:
+ * 	ap - a pointer to an ApInt object
+ * 
+ * Returns:
+ * 	An integer representing the power of the highest bit set to represent
+ * 	the first element of the ApInt object's data array
+ * 
+ */
 int apint_highest_bit_set(const ApInt *ap) {
 	if (apint_is_zero(ap)) {
 		return -1;
@@ -149,16 +177,32 @@ ApInt *apint_negate(const ApInt *ap) {
 	else {
 		sign = 0UL;
 	}
-		//sign = (unsigned)(!ap->flags);
-	
+
 	ApInt apint = {ap->len, sign, negData};
 	*negApInt = apint;
 	return negApInt;
 }
 
-// milestone 1 - only first uint64_t val
-// Peter
-//Need to incorporate sign usage when returning from this function
+/*
+ * Computes the sum of the first elements from the data array in 
+ * two separate Apint objects. The function uses the add_magnitudes 
+ * and subtract_magnitudes function to handle the appropriate 
+ * calculations, which is dependent on whether or not the values
+ * being added are positive or negative
+ * 
+ * Parameters:
+ * a - a pointer to an ApInt object
+ * b - a ponter to an ApInt object
+ * 
+ * Returns:
+ * add_magnitudes(a,b) - a function call which returns an ApInt object
+ * which holds the sum of the values represented by a and b
+ * sum - an ApInt object which is returned if both a and b represent
+ * negative values
+ * diff - an ApInt object which is returned if subtract_magnitudes 
+ * is called 
+ * 
+ */
 ApInt *apint_add(const ApInt *a, const ApInt *b) {
 	if (!apint_is_negative(a) && !apint_is_negative(b)) {
 		return add_magnitudes(a, b);
@@ -216,8 +260,19 @@ int apint_compare(const ApInt *left, const ApInt *right) {
 	
 }
 
-// only first uint64_t val
-// helpers for add and subtract
+/* 
+ * Helps compute the sum of the values represented by two different
+ * pointers to ApInt objects. 
+ * 
+ * Parameters:
+ * a - a pointer to an ApInt object
+ * b - a pointer to an Apint object
+ * 
+ * Returns:
+ * sumApInt- a pointer to an ApInt object holding the appropriate
+ * sum of the values represented by a and b
+ * 
+ */
 ApInt *add_magnitudes(const ApInt *a, const ApInt *b) {
 	ApInt * sumApInt = malloc(sizeof(ApInt));
 	uint64_t sum = a->data[0] + b->data[0];

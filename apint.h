@@ -1,5 +1,9 @@
 /*
- * Arbitrary-precision integer data type
+ * CSF Assignment 1
+ * Function declarations for Arbitrary-precision integer 
+ * data type operations
+ * Casey Levitt and Peter Novello
+ * clevitt1@jhu.edu and pnovell1@jhu.edu
  */
 
 #ifndef APINT_H
