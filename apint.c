@@ -133,15 +133,15 @@ ApInt *apint_negate(const ApInt *ap) {
 	uint32_t sign;
 	if (apint_is_zero(ap)) {
 		sign = ap->flags;
-	} else if (ap->flags == 0UL) { 
+	} 
+	else if (ap->flags == 0UL) { 
 		sign = 1UL;
-		}
-		else {
-			sign = 0UL;
-		}
-	
-		//sign = (unsigned)(!ap->flags);
 	}
+	else {
+		sign = 0UL;
+	}
+		//sign = (unsigned)(!ap->flags);
+	
 	ApInt apint = {ap->len, sign, negData};
 	*negApInt = apint;
 	return negApInt;
