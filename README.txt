@@ -23,3 +23,10 @@ Adding logic:
 	// Case 3: one positive, one negative
 	// 			3a: positive one is greater  -  subtract_magnitudes(positive, negative), sign is 0
 	//			3b: negative one is greater  -  subtract_magnitudes(negative, positive), sign is 1
+
+
+Visualizing highest_bit_set:
+
+ // 10000000000      01000000000  00100000000
+ //Bit: 00101001111      00101001111  00101001111
+ //00000000000      00000000000  00100000000

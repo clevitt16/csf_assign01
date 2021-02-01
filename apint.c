@@ -73,18 +73,14 @@ int apint_highest_bit_set(const ApInt *ap) {
 	 uint64_t bits = ap->data[ap->len - 1];
 	 uint64_t size = 64UL;
 
-	//Not sure if this method works with 64-bit
-	 /*while (bit >>= 1) {
-		 pos++;
-	 }*/
 	for (uint64_t i = 0; i < size; i++) {
 		if (i == 63UL) {
 			printf("%ld", bits);
 			printf("%ld", 0x7FFFFFF76B48C000 >> i);
 		}
-		if (((0x7FFFFFF76B48C000 >> i) & bits) != 0) {           // 10000000000      01000000000  00100000000
-			return 63 - i;                       //Bit: 00101001111      00101001111  00101001111
-		}                                       //00000000000      00000000000  00100000000
+		if (((0x8000000000000000 >> i) & bits) != 0) {          
+			return 63 - i;                                       
+		}           
 	}
 	return 0; 
 }
@@ -92,9 +88,14 @@ int apint_highest_bit_set(const ApInt *ap) {
 // Casey
 // milestone 2 - only for first uint64_t val
 char *apint_format_as_hex(const ApInt *ap) {
+	if (apint_is_zero(ap)) {
+		char * zeroString = malloc(2 * sizeof(char));
+		*zeroString = "0";
+		return zeroString;
+	}
 	uint64_t num = ap->data[0];
-	// the max hex values needed for a 64-bit value is 16
-	char backwardsHex[16 * ap->len];
+	// the max hex values needed for a 64-bit value is 16, plus sign character
+	char backwardsHex[16 * ap->len + 1];
 	uint32_t hexLength = 0;
 	while(num > 0) {
 		char hexDigit = num % 16;
@@ -107,6 +108,10 @@ char *apint_format_as_hex(const ApInt *ap) {
 		hexLength++;
 		num -= hexDigit;
 		num = num/16;
+	}
+	if (apint_is_negative(ap)) {
+		backwardsHex[hexLength] = '-';
+		hexLength++;
 	}
 	char * forwardsHex = malloc(hexLength * sizeof(char) + 1);
 	for (uint32_t i = 0; i < hexLength; i++) {
