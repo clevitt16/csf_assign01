@@ -191,8 +191,9 @@ ApInt *apint_add(const ApInt *a, const ApInt *b) {
 // Casey
 ApInt *apint_sub(const ApInt *a, const ApInt *b) {
 	ApInt *new_b = apint_negate(b);	
-	return apint_add(a, new_b);
-	
+	ApInt *diff = apint_add(a, new_b);
+	destroy(new_b);
+	return diff;
 }
 
 // milestone 1 - only first uint64_t val
