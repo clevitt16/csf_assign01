@@ -117,9 +117,9 @@ void testApintIsZero(TestObjs *objs) {
 
 void testApintIsNegative(TestObjs *objs) {
 	ASSERT(apint_is_negative(objs->minus1));
-	ASSERT(!apint_is_zero(objs->ap0));
-	ASSERT(!apint_is_zero(objs->ap1));
-	ASSERT(!apint_is_zero(objs->max1));
+	ASSERT(!apint_is_negative(objs->ap0));
+	ASSERT(!apint_is_negative(objs->ap1));
+	ASSERT(!apint_is_negative(objs->max1));
 }
 
 void testCompare(TestObjs *objs) {
@@ -139,7 +139,8 @@ void testCompare(TestObjs *objs) {
 
 void testFormatAsHex(TestObjs *objs) {
 	char *s;
-
+	s = apint_format_as_hex(objs->ap0);
+	printf("%c", *s);
 	ASSERT(0 == strcmp("0", (s = apint_format_as_hex(objs->ap0))));
 	free(s);
 
