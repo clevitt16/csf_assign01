@@ -220,7 +220,7 @@ void testAdd(TestObjs *objs) {
 }
 
 void testSub(TestObjs *objs) {
-	ApInt *a, *b, *diff;
+	ApInt *diff;
 	char *s;
 
 	/* subtracting 1 from ffffffffffffffff is fffffffffffffffe */

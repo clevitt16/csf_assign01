@@ -192,7 +192,7 @@ ApInt *apint_add(const ApInt *a, const ApInt *b) {
 ApInt *apint_sub(const ApInt *a, const ApInt *b) {
 	ApInt *new_b = apint_negate(b);	
 	ApInt *diff = apint_add(a, new_b);
-	destroy(new_b);
+	apint_destroy(new_b);
 	return diff;
 }
 
