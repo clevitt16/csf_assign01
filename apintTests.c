@@ -179,11 +179,9 @@ void testNegate(TestObjs *objs) {
 
 
 	result = apint_negate(objs->ap110660361);
-	ASSERT(11066036 == result->data[0]);
+	ASSERT(11066036UL == result->data[0]);
 	ASSERT(result->flags == 1);
 	apint_destroy(result);
-
-
 }
 
 void testAdd(TestObjs *objs) {
