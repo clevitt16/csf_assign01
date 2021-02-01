@@ -8,6 +8,7 @@
 #include <string.h>
 #include <assert.h>
 #include "apint.h"
+#include <stdio.h>
 
 // milestone 1
 // Casey
