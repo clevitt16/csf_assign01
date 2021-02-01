@@ -57,7 +57,7 @@ int apint_is_negative(const ApInt *ap) {
 // if index is out-of-bounds, return 0
 // Casey
 uint64_t apint_get_bits(const ApInt *ap, unsigned n) {
-	assert(ap->len >= 1);
+	//assert(ap->len >= 1UL);
 	if (n > ap->len) {
 		return 0UL;
 	}
