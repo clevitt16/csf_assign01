@@ -70,6 +70,10 @@ int apint_highest_bit_set(const ApInt *ap) {
 	if (apint_is_zero(ap)) {
 		return -1;
 	}
+
+	if(ap->data[0] == 1UL) {
+		return 0;
+	}
 	 uint64_t bits = ap->data[ap->len - 1];
 	 uint64_t size = 64UL;
 
