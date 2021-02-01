@@ -94,21 +94,23 @@ char *apint_format_as_hex(const ApInt *ap) {
 		zeroString[1] = '\0';
 		return zeroString;
 	}
-	uint64_t num = ap->data[0];
 	// the max hex values needed for a 64-bit value is 16, plus sign character
 	char backwardsHex[16 * ap->len + 1];
-	uint32_t hexLength = 0;
-	while(num > 0) {
-		char hexDigit = num % 16;
-		if (hexDigit <= 9) {
-			backwardsHex[hexLength] = hexDigit + '0';
+	uint32_t hexLength = 0U;
+	for (uint32_t i = 0; i < ap->len; i++) {
+		uint64_t num = ap->data[i];
+		while(num > 0) {
+			char hexDigit = num % 16;
+			if (hexDigit <= 9) {
+				backwardsHex[hexLength] = hexDigit + '0';
+			}
+			else {
+				backwardsHex[hexLength] = hexDigit - (char)10 + 'a';
+			}
+			hexLength++;
+			num -= hexDigit;
+			num = num/16;
 		}
-		else {
-			backwardsHex[hexLength] = hexDigit - (char)10 + 'a';
-		}
-		hexLength++;
-		num -= hexDigit;
-		num = num/16;
 	}
 	if (apint_is_negative(ap)) {
 		backwardsHex[hexLength] = '-';
