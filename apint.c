@@ -100,7 +100,7 @@ char *apint_format_as_hex(const ApInt *ap) {
 	for (uint32_t i = 0; i < ap->len; i++) {
 		uint64_t num = ap->data[i];
 		if (num == 0UL) {
-			for (int j = 0; i < 16; j++) {
+			for (int j = 0; j < 16; j++) {
 				backwardsHex[hexLength] = '0';
 				hexLength++;
 			}
