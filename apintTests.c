@@ -145,8 +145,7 @@ void testCompare(TestObjs *objs) {
 
 void testFormatAsHex(TestObjs *objs) {
 	char *s;
-	s = apint_format_as_hex(objs->ap0);
-	printf("%c", *s);
+	
 	ASSERT(0 == strcmp("0", (s = apint_format_as_hex(objs->ap0))));
 	free(s);
 
