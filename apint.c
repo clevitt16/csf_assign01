@@ -77,6 +77,10 @@ int apint_highest_bit_set(const ApInt *ap) {
 		 pos++;
 	 }*/
 	for (uint64_t i = 0; i < size; i++) {
+		if (i == 63UL) {
+			printf("%d", bits);
+			printf("%d", 0x7FFFFFF76B48C000 >> i);
+		}
 		if (((0x7FFFFFF76B48C000 >> i) & bits) != 0) {           // 10000000000      01000000000  00100000000
 			return 63 - i;                       //Bit: 00101001111      00101001111  00101001111
 		}                                       //00000000000      00000000000  00100000000
