@@ -311,7 +311,7 @@ int apint_compare(const ApInt *left, const ApInt *right) {
 		if (leftSign == 0) {
 			return 1;
 		}
-		return - 1;
+		return -1;
 	}
 	else if (right->len > left->len) {
 		if (rightSign == 0) {
@@ -319,7 +319,6 @@ int apint_compare(const ApInt *left, const ApInt *right) {
 		}
 		return 1;
 	}
-	
 	if (left->data[0] == right->data[0]) {
 		return 0;
 	}
@@ -330,13 +329,11 @@ int apint_compare(const ApInt *left, const ApInt *right) {
 		}
 		return -1;
 	}
-
 	if (left->data[0] < right->data[0]){
 			return 1;
 		}
 	return -1;
 }
-
 /* 
  * Helper function for apint_add and apint_sub, computes the sum of the magnitudes
  * represented by two different pointers to ApInt objects. Returns a new ApInt
