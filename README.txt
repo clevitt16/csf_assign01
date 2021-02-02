@@ -1,32 +1,15 @@
-This file should contain the names of the team members, and
-should briefly summarize each team member's contributions to the
-code.
+Casey Levitt and Peter Novello
+clevitt1@jhu.edu and pnovell1@jhu.edu
 
-Notes:
+Casey:
 
-On add_magnitudes:
+Worked on apint_create_from_u64, apint_is_zero, apint_get_bits, 
+apint_highest_bit_set, apint_format_as_hex, apint_negate, apint_add, 
+apint_compare, and add_magnitudes functions. For the unit testing, 
+Casey worked on testApintGetBits, testApintIsZero, and test ApintIsNegative.
 
-	// do we just add the numbers??
-	// 2 cases: sum does not need another uint64, and sum does
-	// ex: 1111 + 1111 =  11110 >> [1110, 0001]
-	//      15  +  15  =  30
-	// ex: 11111111 + 11111111 =  111111110 >> [11111110, 00000001]
-	//      255  +  255  =  610
-	// so even if both values are maxed out, the max new place value will be a 1 in the next bit
-	// assumes that lengths of both are 1 (use assert!)
+Peter:
 
-
-Adding logic:
-
-	// Case 1: both positive - add_magnitudes, sign is 0
-	// Case 2: both negative - add magnitudes, sign is 1
-	// Case 3: one positive, one negative
-	// 			3a: positive one is greater  -  subtract_magnitudes(positive, negative), sign is 0
-	//			3b: negative one is greater  -  subtract_magnitudes(negative, positive), sign is 1
-
-
-Visualizing highest_bit_set:
-
- // 10000000000      01000000000  00100000000
- //Bit: 00101001111      00101001111  00101001111
- //00000000000      00000000000  00100000000
+Worked on apint_destroy, apint_is_negative, apint_highest_bit_set, 
+apint_negate, apint_add, apint_sub, and subtract_magnitudes. 
+For the unit testing, Peter worked on testNegate.
