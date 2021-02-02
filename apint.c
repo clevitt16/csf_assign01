@@ -325,13 +325,13 @@ int apint_compare(const ApInt *left, const ApInt *right) {
 	}
 	// apints have the same length and are either both positive or both negative
 	if (leftSign == 0) {
-		if (left->data[0] > right->data[0) {
+		if (left->data[0] > right->data[0]) {
 			return 1;
 		}
 		return -1;
 	}
 
-	if (left->data[0] < right->data[0) {
+	if (left->data[0] < right->data[0]){
 			return 1;
 		}
 	return -1;
