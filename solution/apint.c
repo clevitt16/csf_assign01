@@ -307,16 +307,33 @@ int apint_compare(const ApInt *left, const ApInt *right) {
 	if (leftSign != rightSign) { // case that one is positive and the other negative
 		return rightSign - leftSign;
 	} 
-	if (left->len != right->len) { // case that the lengths are different
+	if (left->len > right->len) { // case that the lengths are different
 		if (leftSign == 0) {
-			return left->len - right->len;
+			return 1;
 		}
-		return right->len - left->len;
+		return -1;
 	}
-	// apints have the same length
-	return left->data[0] - right->data[0];
+	else if (right->len > left->len) {
+		if (rightSign == 0) {
+			return - 1;
+		}
+		return 1;
+	}
+	if (left->data[0] == right->data[0]) {
+		return 0;
+	}
+	// apints have the same length and are either both positive or both negative
+	if (leftSign == 0) {
+		if (left->data[0] > right->data[0]) {
+			return 1;
+		}
+		return -1;
+	}
+	if (left->data[0] < right->data[0]){
+			return 1;
+		}
+	return -1;
 }
-
 /* 
  * Helper function for apint_add and apint_sub, computes the sum of the magnitudes
  * represented by two different pointers to ApInt objects. Returns a new ApInt

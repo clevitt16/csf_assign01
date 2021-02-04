@@ -35,11 +35,29 @@ ApInt *apint_create_from_u64(uint64_t val) {
 }
 
 
-// TODO - Peter
+// Peter
 ApInt *apint_create_from_hex(const char *hex) {
-	/* TODO: implement */
-	// assert(0);
-	return NULL;
+	ApInt * ptr = malloc(sizeof(ApInt));
+	ApInt apint;
+
+	int size = getSize(hex);
+
+
+
+
+
+
+	return ptr;
+}
+
+int getSize(const char *hex) {
+	char * p;
+	int size = 0;
+
+	for (p = hex; *p != '\0'; p++) {
+		size++;
+	}
+	return size;
 }
 
 
