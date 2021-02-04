@@ -43,24 +43,21 @@ ApInt *apint_create_from_hex(const char *hex) {
 	//check if size is 0 
 	//check for negative in get size
 	// run a loop based on number of hex chars
-	//sep variable to trakc cur index , start from len - 1
+	//set variable to track cur index , start from len - 1
 	//every 16 hex char - decrease index by 1
 	//char convert to int 
 	//bitwise OR for left shifting by 4
 
-	uint32_t len = 0U;
-
-	(size - 1)/ 16 + 1
-
+	uint32_t len = ((size - 1)/ 16) + 1;
 
 	apint.len = len;
-	apint.flags = 0U
+	apint.flags = 0U;
 	uint64_t * data = malloc(sizeof(uint64_t) * len);
-
 
 	return ptr;
 }
 
+//returns size of hex character pointer
 int getSize(const char *hex) {
 	char * p;
 	int size = 0;
@@ -74,9 +71,32 @@ int getSize(const char *hex) {
 	}
 
 	for (p = hex; *p != '\0'; p++) {
+		
+		if (*p == '-') {
+			continue;
+		}
 		size++;
 	}
 	return size;
+}
+
+//used to get value from a specific character
+int getVal(const char c) {
+	
+	int val = c - '0';
+	
+	if (val <= 9) {
+		return val;
+	}
+	else if (val >= 17 && val <= 22) {
+		return val - 7;
+	}
+	else if (val >= 49 && val <= 54) {
+		return val - 39;
+	}
+	else {
+		return -1;
+	}
 }
 
 
