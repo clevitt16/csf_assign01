@@ -39,12 +39,23 @@ ApInt *apint_create_from_u64(uint64_t val) {
 ApInt *apint_create_from_hex(const char *hex) {
 	ApInt * ptr = malloc(sizeof(ApInt));
 	ApInt apint;
-
 	int size = getSize(hex);
+	//check if size is 0 
+	//check for negative in get size
+	// run a loop based on number of hex chars
+	//sep variable to trakc cur index , start from len - 1
+	//every 16 hex char - decrease index by 1
+	//char convert to int 
+	//bitwise OR for left shifting by 4
+
+	uint32_t len = 0U;
+
+	(size - 1)/ 16 + 1
 
 
-
-
+	apint.len = len;
+	apint.flags = 0U
+	uint64_t * data = malloc(sizeof(uint64_t) * len);
 
 
 	return ptr;
@@ -53,6 +64,14 @@ ApInt *apint_create_from_hex(const char *hex) {
 int getSize(const char *hex) {
 	char * p;
 	int size = 0;
+
+	while (*p == '0') {
+		p++;
+	}
+
+	if (!*p) {
+		return 0;
+	}
 
 	for (p = hex; *p != '\0'; p++) {
 		size++;
