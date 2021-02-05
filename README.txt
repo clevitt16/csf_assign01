@@ -13,3 +13,19 @@ Peter:
 Worked on apint_destroy, apint_is_negative, apint_highest_bit_set, 
 apint_negate, apint_add, apint_sub, and subtract_magnitudes. 
 For the unit testing, Peter worked on testNegate.
+
+
+from add_magnitudes
+
+	if (sum < a->data[0] || sum < b->data[0]) { // case that addition of uint64_t values caused overflow
+		uint64_t * data = malloc(2 * sizeof(uint64_t));
+		data[0] = sum;
+		data[1] = 1UL; // will always be 000...0001
+		ApInt apint = {2U, 0U, data};
+		*sumApInt = apint;
+	} else { // cast that there was no overflow
+		uint64_t * data = malloc(sizeof(uint64_t));
+		data[0] = sum;
+		ApInt apint = {1U, 0U, data};
+		
+	}

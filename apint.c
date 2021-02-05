@@ -420,39 +420,43 @@ int apint_compare(const ApInt *left, const ApInt *right) {
  */
 // will change this to add values with any-legnth data arrays
 ApInt *add_magnitudes(const ApInt *a, const ApInt *b) {
-	int aShorter = 1;
-	uint32_t shorterLength;
-	if (a->len <= b->len) {
-		shorterLength = a->len;
-	} else {
-		aShorter = 0;
-		shorterLength = b->len;
-	}
 	ApInt * sumApInt = malloc(sizeof(ApInt));
-
+	uint64_t * sumData;
+	uint32_t longerLength;
+	if (a->len >= b->len) {
+		longerLength = a->len;
+	} else {
+		longerLength = b->len;
+	}
+	sumData = malloc((longerLength + 1) * sizeof(uint64_t)); //  can allocate one extra space for overflow, but use length to not access it
 	uint64_t carry = 0UL;
-	for (uint32_t i = 0; i < shorterLength; i++) {
-		uint64_t sum = a->data[i] + b->data[i] + carry;
-		if (sum < a->data[0] || sum < b->data[0]) { // case that addition of uint64_t values caused overflow
+	uint32_t index = 0U; // effectively the length
+	for (; index < longerLength; index++) {
+		uint64_t aVal, bVal;
+		if (index >= a->len) {
+			aVal = 0UL;
+		} else {
+			aVal = a->data[i];
+		}
+		if (index >= b->len) {
+			bVal = 0UL;
+		} else {
+			bVal = b->data[i];
+		}
+		uint64_t sum = aVal + bVal + carry;
+		if (sum < aVal || sum < bVal) { // case that addition of uint64_t values caused overflow
 			carry = 1UL;
 		} else {
 			carry = 0UL;
-		}
-		// need to fill the data array, but how to know the right size?
-		// can always allocate one extra space, but use length to not access it
+		} 
+		sumData[i] = sum;
+	} // at this point, index = longerLength
+	if (carry == 1UL) {
+		sumData[i] = carry;
+		index++;
 	}
-	if (sum < a->data[0] || sum < b->data[0]) { // case that addition of uint64_t values caused overflow
-		uint64_t * data = malloc(2 * sizeof(uint64_t));
-		data[0] = sum;
-		data[1] = 1UL; // will always be 000...0001
-		ApInt apint = {2U, 0U, data};
-		*sumApInt = apint;
-	} else { // cast that there was no overflow
-		uint64_t * data = malloc(sizeof(uint64_t));
-		data[0] = sum;
-		ApInt apint = {1U, 0U, data};
-		*sumApInt = apint;
-	}
+	ApInt apint = {index, 0U, sumData};
+	*sumApInt = apint;
 	return sumApInt;
 }
 
