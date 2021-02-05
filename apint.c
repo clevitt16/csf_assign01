@@ -97,6 +97,7 @@ int getVal(const char c) {
 	else {
 		return -1;
 	}
+
 }
 
 
