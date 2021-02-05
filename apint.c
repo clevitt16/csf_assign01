@@ -418,7 +418,7 @@ int apint_compare(const ApInt *left, const ApInt *right) {
  * 	sum of the values represented by a and b
  * 
  */
-// will change this to add values with any-legnth data arrays
+// will change this to add values with any-length data arrays
 ApInt *add_magnitudes(const ApInt *a, const ApInt *b) {
 	ApInt * sumApInt = malloc(sizeof(ApInt));
 	uint64_t * sumData;
@@ -436,23 +436,23 @@ ApInt *add_magnitudes(const ApInt *a, const ApInt *b) {
 		if (index >= a->len) {
 			aVal = 0UL;
 		} else {
-			aVal = a->data[i];
+			aVal = a->data[index];
 		}
 		if (index >= b->len) {
 			bVal = 0UL;
 		} else {
-			bVal = b->data[i];
+			bVal = b->data[index];
 		}
 		uint64_t sum = aVal + bVal + carry;
 		if (sum < aVal || sum < bVal) { // case that addition of uint64_t values caused overflow
-			carry = 1UL;
+			carry = 1UL; // need to confirm that carry won't mess up this check
 		} else {
 			carry = 0UL;
 		} 
-		sumData[i] = sum;
+		sumData[index] = sum;
 	} // at this point, index = longerLength
 	if (carry == 1UL) {
-		sumData[i] = carry;
+		sumData[index] = carry;
 		index++;
 	}
 	ApInt apint = {index, 0U, sumData};
@@ -472,13 +472,37 @@ ApInt *add_magnitudes(const ApInt *a, const ApInt *b) {
  * Returns:
  * 	a pointer to an ApInt object holding the difference between the magnitudes
  * 	of the values represented by a and b
+ * 
+ * // will change to work for any-length arrays
  */
 ApInt *subtract_magnitudes(const ApInt *a, const ApInt *b) {
 	ApInt * diffApInt = malloc(sizeof(ApInt));
-	uint64_t diff = a->data[0] - b->data[0];
-	uint64_t * data = malloc(sizeof(uint64_t));
-	data[0] = diff;
-	ApInt apint = {1, 0, data};
+	// a > b, but it's possible b[i] > a[i]
+	assert(a->len >= b->len);
+	uint64_t * diffData = malloc(a->len * sizeof(uint64_t));
+	uint64_t borrow = 0UL;
+	uint32_t index = 0U; // effectively the length
+	for (; index < a->len; index++) {
+		uint64_t bVal;
+		if (index >= b->len) {
+			bVal = 0UL;
+		} else {
+			bVal = b->data[i];
+		}
+		uint64_t diff = a->data[index] - bVal - borrow;
+		if (diff >= a->data[index] && bVal != 0UL) {
+			borrow = 1UL;
+		} else {
+			borrow = 0UL;
+		}
+		diffData[index] = diff;
+	}
+	// if borrow == 1 at this point, problem!!
+	assert(borrow == 0UL);
+	while(diffData[index - 1] == 0UL) {
+		index--;
+	}
+	ApInt apint = {index, 0, diffData};
 	*diffApInt = apint;
 	return diffApInt;
 }
