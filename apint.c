@@ -48,12 +48,33 @@ ApInt *apint_create_from_hex(const char *hex) {
 	//char convert to int 
 	//bitwise OR for left shifting by 4
 
-	uint32_t len = ((size - 1)/ 16) + 1;
+	uint32_t len = (unsigned)(((size - 1)/ 16) + 1);
 
 	apint.len = len;
 	apint.flags = 0U;
+	
 	uint64_t * data = malloc(sizeof(uint64_t) * len);
+	uint32_t curIndex = apint.len - 1;
 
+	for (int i = 0; i < size; i++) { 
+
+		if (i % 16 == 0 && i != 0) {
+			curIndex--;
+		}
+		int c = getVal(hex[i]);
+
+		if (c == -1) {
+			return null;
+		}
+
+		uint64_t bits = data[curIndex];
+		bits = bits << 4;
+		bits = bits || c;
+	}
+
+	apint.data = data;
+	*ptr = apint;
+	
 	return ptr;
 }
 
@@ -61,6 +82,10 @@ ApInt *apint_create_from_hex(const char *hex) {
 int getSize(const char *hex) {
 	char * p;
 	int size = 0;
+
+	while(*p == '-') {
+		p++;
+	}
 
 	while (*p == '0') {
 		p++;
@@ -72,9 +97,6 @@ int getSize(const char *hex) {
 
 	for (p = hex; *p != '\0'; p++) {
 		
-		if (*p == '-') {
-			continue;
-		}
 		size++;
 	}
 	return size;
@@ -97,6 +119,7 @@ int getVal(const char c) {
 	else {
 		return -1;
 	}
+
 }
 
 
