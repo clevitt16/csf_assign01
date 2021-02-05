@@ -34,7 +34,7 @@ ApInt *apint_create_from_u64(uint64_t val) {
 	return ptr;
 }
 
-
+// could use strtol()
 // Peter
 ApInt *apint_create_from_hex(const char *hex) {
 	ApInt * ptr = malloc(sizeof(ApInt));
@@ -363,12 +363,15 @@ ApInt *apint_sub(const ApInt *a, const ApInt *b) {
  * 
  */
 int apint_compare(const ApInt *left, const ApInt *right) {
+	if (apint_is_zero(left) && apint_is_zero(right)) { // can delete
+		return 0;
+	}
 	int leftSign = apint_is_negative(left);
 	int rightSign = apint_is_negative(right);
 	if (leftSign != rightSign) { // case that one is positive and the other negative
 		return rightSign - leftSign;
 	} 
-	if (left->len > right->len) { // case that the lengths are different
+	if (left->len > right->len) { // case of same sign, different lengths
 		if (leftSign == 0) {
 			return 1;
 		}
@@ -376,21 +379,27 @@ int apint_compare(const ApInt *left, const ApInt *right) {
 	}
 	else if (right->len > left->len) {
 		if (rightSign == 0) {
-			return - 1;
+			return -1;
 		}
 		return 1;
 	}
-	if (left->data[0] == right->data[0]) {
-		return 0;
-	}
+	
 	// apints have the same length and are either both positive or both negative
-	if (leftSign == 0) {
-		if (left->data[0] > right->data[0]) {
+	// will compare largest place values
+	uint32_t index = left->len - 1;
+	while (left->data[index] == right->data[index]) {
+		if (index == 0U) {
+			return 0;
+		}
+		index--;
+	} // most significant values that differ are at index
+	if (leftSign == 0) { // positive values:
+		if (left->data[index] > right->data[index]) {
 			return 1;
 		}
 		return -1;
-	}
-	if (left->data[0] < right->data[0]){
+	} // negative values:
+	if (left->data[index] < right->data[index]){
 			return 1;
 		}
 	return -1;
@@ -409,9 +418,29 @@ int apint_compare(const ApInt *left, const ApInt *right) {
  * 	sum of the values represented by a and b
  * 
  */
+// will change this to add values with any-legnth data arrays
 ApInt *add_magnitudes(const ApInt *a, const ApInt *b) {
+	int aShorter = 1;
+	uint32_t shorterLength;
+	if (a->len <= b->len) {
+		shorterLength = a->len;
+	} else {
+		aShorter = 0;
+		shorterLength = b->len;
+	}
 	ApInt * sumApInt = malloc(sizeof(ApInt));
-	uint64_t sum = a->data[0] + b->data[0];
+
+	uint64_t carry = 0UL;
+	for (uint32_t i = 0; i < shorterLength; i++) {
+		uint64_t sum = a->data[i] + b->data[i] + carry;
+		if (sum < a->data[0] || sum < b->data[0]) { // case that addition of uint64_t values caused overflow
+			carry = 1UL;
+		} else {
+			carry = 0UL;
+		}
+		// need to fill the data array, but how to know the right size?
+		// can always allocate one extra space, but use length to not access it
+	}
 	if (sum < a->data[0] || sum < b->data[0]) { // case that addition of uint64_t values caused overflow
 		uint64_t * data = malloc(2 * sizeof(uint64_t));
 		data[0] = sum;
