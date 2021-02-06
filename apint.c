@@ -47,14 +47,14 @@ ApInt *apint_create_from_hex(const char *hex) {
 	//bitwise OR for left shifting by 4
 
 	int size = getSize(hex); // get the number on non-zero hex digits
-	if (size == 0) {
+	if (size == -1) {  // case that the string was invalid
+		return NULL;
+	} else if (size == 0) {
 		return apint_create_from_u64(0UL);
 	}
 	ApInt * ptr = malloc(sizeof(ApInt));
 	ApInt apint;
-
 	uint32_t len = (unsigned)(((size - 1)/ 16) + 1); // length of uint64_t data array
-
 	apint.len = len;
 	if (hex[0] == '-') {
 		apint.flags = 1U;    
@@ -65,7 +65,7 @@ ApInt *apint_create_from_hex(const char *hex) {
 	uint64_t * data = malloc(sizeof(uint64_t) * len);
 	uint32_t curIndex = apint.len - 1;
 
-	for (int i = 0; i < size; i++) { 
+	for (int i = 0; i < size; i++) { // for each valid hex character
 
 		if (i % 16 == 0 && i != 0) {
 			curIndex--;
@@ -92,7 +92,7 @@ ApInt *apint_create_from_hex(const char *hex) {
 int getSize(const char *hex) {  
 	char * p = hex;
 	int size = 0;
-	while(*p == '-') {
+	if (*p == '-') {
 		p++;
 	}
 	while (*p == '0') {
@@ -102,6 +102,10 @@ int getSize(const char *hex) {
 		return 0;
 	}
 	for (; *p != '\0'; p++) {
+		char digit = *p;
+		if (!((digit >= '0' && digit <= '9') || (digit >= 'a' && digit <= 'f'))) {
+			return -1;
+		}
 		size++;
 	}
 	return size;
