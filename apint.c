@@ -44,7 +44,7 @@ ApInt *apint_create_from_hex(const char *hex) {
 	//char convert to int 
 	//bitwise OR for left shifting by 4
 
-	int size = getSize(hex); // get the number on non-zero hex digits
+	int size = getValidSize(hex); // get the number on non-zero hex digits
 	if (size == -1) {  // case that the string was invalid
 		return NULL;
 	} else if (size == 0) {
@@ -63,13 +63,25 @@ ApInt *apint_create_from_hex(const char *hex) {
 	uint64_t * data = malloc(sizeof(uint64_t) * len);
 	uint32_t curIndex = apint.len - 1; // tracks current index index in uint64_t data array
 
-	for (int i = 0; i < size; i++) { // for each valid hex character
+	int fullSize = getFullSize(hex);
+	if (fullSize == -1) {
+		return NULL;
+	}
+	int startFromIndex = fullSize - size;
+
+	//000AFCB5    AFCB5
+	//size = 8    5
+	//  8 - 5 = 3, which is index of the first non-zero hex char
+
+	for (int i = startFromIndex; i < size; i++) { // for each valid hex character
 		if (i % 16 == 0 && i != 0) { // every 16 hex characters, move to the next array index
 			curIndex--;
 		}
 		int c = getVal(hex[i]);
 
 		if (c == -1) {  // need to free the pointers first!
+			free(data);
+			free(ptr);
 			return NULL;
 		}
 
@@ -85,7 +97,7 @@ ApInt *apint_create_from_hex(const char *hex) {
 
 // returns number of hex characters in given string
 // assumes hex is null-terminated!!
-int getSize(const char *hex) {  
+int getValidSize(const char *hex) {  
 	char * p = hex;
 	int size = 0;
 	if (*p == '-') {
@@ -99,12 +111,30 @@ int getSize(const char *hex) {
 	}
 	for (; *p != '\0'; p++) {
 		char digit = *p;
-		if (!((digit >= '0' && digit <= '9') || (digit >= 'a' && digit <= 'f'))) {
+		if (!((digit >= '0' && digit <= '9') || (digit >= 'a' && digit <= 'f') || (digit >= 'A' && digit <= 'F'))) {
 			return -1;
 		}
 		size++;
 	}
 	return size;
+}
+
+int getFullSize(const char *hex) {
+	char * s = hex;
+	int fullSize = 0;
+
+	if (*s == '-') {
+		s++;
+	}
+	for (; *s != '\0'; s++) {
+		char digit = *s;
+		if (!((digit >= '0' && digit <= '9') || (digit >= 'a' && digit <= 'f') || (digit >= 'A' && digit <= 'F'))) {
+			return -1;
+		}
+		fullSize++;
+	}
+	
+	return fullSize;
 }
 
 // used to get decimal value from a hex character
@@ -113,7 +143,7 @@ int getVal(const char c) {
 	if (val <= 9) {
 		return val;
 	}
-	else if (val >= 17 && val <= 22) { // capital letters not allowed, i think!
+	else if (val >= 17 && val <= 22) { 
 		return val - 7;
 	}
 	else if (val >= 49 && val <= 54) {
