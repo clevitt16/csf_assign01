@@ -73,7 +73,7 @@ ApInt *apint_create_from_hex(const char *hex) {
 	//size = 8    5
 	//  8 - 5 = 3, which is index of the first non-zero hex char
 
-	for (int i = startFromIndex; i < size; i++) { // for each valid hex character
+	for (int i = startFromIndex; i < size + startFromIndex; i++) { // for each valid hex character
 		if (i % 16 == 0 && i != 0) { // every 16 hex characters, move to the next array index
 			curIndex--;
 		}

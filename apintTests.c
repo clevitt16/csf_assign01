@@ -133,6 +133,8 @@ void testCreateFromU64(TestObjs *objs) {
 
 void testCreateFromHex(TestObjs *objs) {
 
+	
+
 }
 
 void testApintIsZero(TestObjs *objs) {
@@ -147,6 +149,17 @@ void testApintIsNegative(TestObjs *objs) {
 	ASSERT(!apint_is_negative(objs->ap0));
 	ASSERT(!apint_is_negative(objs->ap1));
 	ASSERT(!apint_is_negative(objs->max1));
+	ASSERT(!apint_is_negative(objs->hex1));
+	ASSERT(!apint_is_negative(objs->hex2));
+	ASSERT(!apint_is_negative(objs->hex3));
+	ASSERT(!apint_is_negative(objs->hex4));
+	ASSERT(!apint_is_negative(objs->hex5));
+	ASSERT(apint_is_negative(objs->nhex1));
+	ASSERT(apint_is_negative(objs->nhex2));
+	ASSERT(apint_is_negative(objs->nhex3));
+	ASSERT(apint_is_negative(objs->nhex4));
+	ASSERT(apint_is_negative(objs->nhex5));
+
 }
 
 void testApintGetBits(TestObjs *objs) {
