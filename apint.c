@@ -34,10 +34,8 @@ ApInt *apint_create_from_u64(uint64_t val) {
 	return ptr;
 }
 
-// could use strtol()
 // Peter
 ApInt *apint_create_from_hex(const char *hex) {
-	
 	//check if size is 0 
 	//check for negative in get size
 	// run a loop based on number of hex chars
@@ -63,32 +61,30 @@ ApInt *apint_create_from_hex(const char *hex) {
 	}
 	
 	uint64_t * data = malloc(sizeof(uint64_t) * len);
-	uint32_t curIndex = apint.len - 1;
+	uint32_t curIndex = apint.len - 1; // tracks current index index in uint64_t data array
 
 	for (int i = 0; i < size; i++) { // for each valid hex character
-
-		if (i % 16 == 0 && i != 0) {
+		if (i % 16 == 0 && i != 0) { // every 16 hex characters, move to the next array index
 			curIndex--;
 		}
 		int c = getVal(hex[i]);
 
-		if (c == -1) {
-			return null;
+		if (c == -1) {  // need to free the pointers first!
+			return NULL;
 		}
 
 		uint64_t bits = data[curIndex];
 		bits = bits << 4;
 		bits = bits | c;
+		data[curIndex] = bits;
 	}
-
 	apint.data = data;
 	*ptr = apint;
-	
 	return ptr;
 }
 
 // returns number of hex characters in given string
-// assumes
+// assumes hex is null-terminated!!
 int getSize(const char *hex) {  
 	char * p = hex;
 	int size = 0;
@@ -111,15 +107,13 @@ int getSize(const char *hex) {
 	return size;
 }
 
-//used to get value from a specific character
+// used to get decimal value from a hex character
 int getVal(const char c) {
-	
 	int val = c - '0';
-	
 	if (val <= 9) {
 		return val;
 	}
-	else if (val >= 17 && val <= 22) {
+	else if (val >= 17 && val <= 22) { // capital letters not allowed, i think!
 		return val - 7;
 	}
 	else if (val >= 49 && val <= 54) {
@@ -128,7 +122,6 @@ int getVal(const char c) {
 	else {
 		return -1;
 	}
-
 }
 
 
