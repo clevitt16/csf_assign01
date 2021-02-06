@@ -29,12 +29,25 @@ typedef struct {
 	ApInt *hex3;
 	ApInt *hex4;
 	ApInt *hex5;
+
+	ApInt *hex6;
+	ApInt *hex7;
+	ApInt *hex8;
+	ApInt *hex9;
+	ApInt *hex10;
+
 	// ApInts multi-array representing negative numbers , increasing magnitude
 	ApInt *nhex1;
 	ApInt *nhex2;
 	ApInt *nhex3;
 	ApInt *nhex4;
 	ApInt *nhex5;
+
+	ApInt *nhex6;
+	ApInt *nhex7;
+	ApInt *nhex8;
+	ApInt *nhex9;
+	ApInt *nhex10;
 } TestObjs;
 
 TestObjs *setup(void);
@@ -170,8 +183,6 @@ void testCreateFromHex(TestObjs *objs) {
 
 
 	char * test;
-
-
 //TODO: May run into issues with ignoring leading zeroes in create from hex
 	ASSERT(0 == strcmp("10000000000000000", (test = apint_format_as_hex(objs->hex1))));
 	free(test);
