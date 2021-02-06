@@ -37,9 +37,7 @@ ApInt *apint_create_from_u64(uint64_t val) {
 // could use strtol()
 // Peter
 ApInt *apint_create_from_hex(const char *hex) {
-	ApInt * ptr = malloc(sizeof(ApInt));
-	ApInt apint;
-	int size = getSize(hex); // number on non-zero hex digits
+	
 	//check if size is 0 
 	//check for negative in get size
 	// run a loop based on number of hex chars
@@ -47,6 +45,13 @@ ApInt *apint_create_from_hex(const char *hex) {
 	//every 16 hex char - decrease index by 1
 	//char convert to int 
 	//bitwise OR for left shifting by 4
+
+	int size = getSize(hex); // get the number on non-zero hex digits
+	if (size == 0) {
+		return apint_create_from_u64(0UL);
+	}
+	ApInt * ptr = malloc(sizeof(ApInt));
+	ApInt apint;
 
 	uint32_t len = (unsigned)(((size - 1)/ 16) + 1); // length of uint64_t data array
 
@@ -82,24 +87,21 @@ ApInt *apint_create_from_hex(const char *hex) {
 	return ptr;
 }
 
-//returns size of hex character pointer
-int getSize(const char *hex) {   00000001
+// returns number of hex characters in given string
+// assumes
+int getSize(const char *hex) {  
 	char * p = hex;
 	int size = 0;
 	while(*p == '-') {
 		p++;
 	}
-
 	while (*p == '0') {
 		p++;
 	}
-
-	if (!*p) {
+	if (!*p) { // is this necessary? this is checking for null terminator
 		return 0;
 	}
-
 	for (; *p != '\0'; p++) {
-		
 		size++;
 	}
 	return size;

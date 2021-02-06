@@ -30,15 +30,16 @@ TestObjs *setup(void);
 void cleanup(TestObjs *objs);
 
 void testCreateFromU64(TestObjs *objs);
+void testCreateFromHex(TestObjs *objs);
 void testApintIsZero(TestObjs *objs);
 void testApintIsNegative(TestObjs *objs);
 void testApintGetBits(TestObjs *objs);
 void testHighestBitSet(TestObjs *objs);
-void testCompare(TestObjs *objs);
 void testFormatAsHex(TestObjs *objs);
 void testNegate(TestObjs *objs);
-void testAdd(TestObjs *objs);
-void testSub(TestObjs *objs);
+void testAddSingle(TestObjs *objs);
+void testSubSingle(TestObjs *objs);
+void testCompareSingle(TestObjs *objs);
 /* TODO: add more test function prototypes */
 
 int main(int argc, char **argv) {
@@ -53,15 +54,16 @@ int main(int argc, char **argv) {
 	}
 
 	TEST(testCreateFromU64);
+	TEST(testCreateFromHex);
 	TEST(testApintIsZero);
 	TEST(testApintIsNegative);
 	TEST(testApintGetBits);
 	TEST(testHighestBitSet);
-	TEST(testCompare);
 	TEST(testFormatAsHex);
 	TEST(testNegate);
-	TEST(testAdd);
-	TEST(testSub);
+	TEST(testAddSingle);
+	TEST(testSubSingle);
+	TEST(testCompareSingle);
 	/* TODO: use TEST macro to execute more test functions */
 
 	TEST_FINI();
@@ -97,21 +99,8 @@ void testCreateFromU64(TestObjs *objs) {
 	ASSERT(0xFFFFFFFFFFFFFFFFUL == apint_get_bits(objs->max1, 0));
 }
 
-void testHighestBitSet(TestObjs *objs) {
-	ASSERT(-1 == apint_highest_bit_set(objs->ap0));
-	ASSERT(0 == apint_highest_bit_set(objs->ap1));
-	ASSERT(26 == apint_highest_bit_set(objs->ap110660361));
-	ASSERT(63 == apint_highest_bit_set(objs->max1));
-}
+void testCreateFromHex(TestObjs *objs) {
 
-void testApintGetBits(TestObjs *objs) {
-	ASSERT(0UL == apint_get_bits(objs->ap0, 1));
-	ASSERT(0UL == apint_get_bits(objs->ap110660361, 2));
-	ASSERT(0UL == apint_get_bits(objs->max1, 1));
-	ASSERT(0UL == apint_get_bits(objs->ap0, 0));
-	ASSERT(1UL == apint_get_bits(objs->ap1, 0));
-	ASSERT(1UL == apint_get_bits(objs->minus1, 0));
-	ASSERT(110660361UL == apint_get_bits(objs->ap110660361, 0));
 }
 
 void testApintIsZero(TestObjs *objs) {
@@ -128,19 +117,22 @@ void testApintIsNegative(TestObjs *objs) {
 	ASSERT(!apint_is_negative(objs->max1));
 }
 
-void testCompare(TestObjs *objs) {
-	/* 1 > 0 */
-	ASSERT(apint_compare(objs->ap1, objs->ap0) > 0);
-	/* 0 < 1 */
-	ASSERT(apint_compare(objs->ap0, objs->ap1) < 0);
-	/* 110660361 > 0 */
-	ASSERT(apint_compare(objs->ap110660361, objs->ap0) > 0);
-	/* 110660361 > 1 */
-	ASSERT(apint_compare(objs->ap110660361, objs->ap1) > 0);
-	/* 0 < 110660361 */
-	ASSERT(apint_compare(objs->ap0, objs->ap110660361) < 0);
-	/* 1 < 110660361 */
-	ASSERT(apint_compare(objs->ap1, objs->ap110660361) < 0);
+void testApintGetBits(TestObjs *objs) {
+	ASSERT(0UL == apint_get_bits(objs->ap0, 1));
+	ASSERT(0UL == apint_get_bits(objs->ap110660361, 2));
+	ASSERT(0UL == apint_get_bits(objs->max1, 1));
+	ASSERT(0UL == apint_get_bits(objs->ap0, 0));
+	ASSERT(1UL == apint_get_bits(objs->ap1, 0));
+	ASSERT(1UL == apint_get_bits(objs->minus1, 0));
+	ASSERT(110660361UL == apint_get_bits(objs->ap110660361, 0));
+}
+
+
+void testHighestBitSet(TestObjs *objs) {
+	ASSERT(-1 == apint_highest_bit_set(objs->ap0));
+	ASSERT(0 == apint_highest_bit_set(objs->ap1));
+	ASSERT(26 == apint_highest_bit_set(objs->ap110660361));
+	ASSERT(63 == apint_highest_bit_set(objs->max1));
 }
 
 void testFormatAsHex(TestObjs *objs) {
@@ -158,6 +150,7 @@ void testFormatAsHex(TestObjs *objs) {
 	ASSERT(0 == strcmp("ffffffffffffffff", (s = apint_format_as_hex(objs->max1))));
 	free(s);
 }
+
 
 void testNegate(TestObjs *objs) {
 	ApInt *result;
@@ -183,7 +176,7 @@ void testNegate(TestObjs *objs) {
 	apint_destroy(result);
 }
 
-void testAdd(TestObjs *objs) {
+void testAddSingle(TestObjs *objs) {
 	ApInt *sum;
 	char *s;
 
@@ -218,7 +211,7 @@ void testAdd(TestObjs *objs) {
 	free(s);
 }
 
-void testSub(TestObjs *objs) {
+void testSubSingle(TestObjs *objs) {
 	ApInt *diff;
 	char *s;
 
@@ -272,6 +265,21 @@ void testSub(TestObjs *objs) {
 	apint_destroy(a);
 	free(s);
 	*/
+}
+
+void testCompareSingle(TestObjs *objs) {
+	/* 1 > 0 */
+	ASSERT(apint_compare(objs->ap1, objs->ap0) > 0);
+	/* 0 < 1 */
+	ASSERT(apint_compare(objs->ap0, objs->ap1) < 0);
+	/* 110660361 > 0 */
+	ASSERT(apint_compare(objs->ap110660361, objs->ap0) > 0);
+	/* 110660361 > 1 */
+	ASSERT(apint_compare(objs->ap110660361, objs->ap1) > 0);
+	/* 0 < 110660361 */
+	ASSERT(apint_compare(objs->ap0, objs->ap110660361) < 0);
+	/* 1 < 110660361 */
+	ASSERT(apint_compare(objs->ap1, objs->ap110660361) < 0);
 }
 
 /* TODO: add more test functions */
