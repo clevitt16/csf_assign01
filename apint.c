@@ -39,7 +39,7 @@ ApInt *apint_create_from_u64(uint64_t val) {
 ApInt *apint_create_from_hex(const char *hex) {
 	ApInt * ptr = malloc(sizeof(ApInt));
 	ApInt apint;
-	int size = getSize(hex);
+	int size = getSize(hex); // number on non-zero hex digits
 	//check if size is 0 
 	//check for negative in get size
 	// run a loop based on number of hex chars
@@ -48,10 +48,14 @@ ApInt *apint_create_from_hex(const char *hex) {
 	//char convert to int 
 	//bitwise OR for left shifting by 4
 
-	uint32_t len = (unsigned)(((size - 1)/ 16) + 1);
+	uint32_t len = (unsigned)(((size - 1)/ 16) + 1); // length of uint64_t data array
 
 	apint.len = len;
-	apint.flags = 0U;
+	if (hex[0] == '-') {
+		apint.flags = 1U;    
+	} else {
+		apint.flags = 0U;
+	}
 	
 	uint64_t * data = malloc(sizeof(uint64_t) * len);
 	uint32_t curIndex = apint.len - 1;
@@ -69,7 +73,7 @@ ApInt *apint_create_from_hex(const char *hex) {
 
 		uint64_t bits = data[curIndex];
 		bits = bits << 4;
-		bits = bits || c;
+		bits = bits | c;
 	}
 
 	apint.data = data;
@@ -79,10 +83,9 @@ ApInt *apint_create_from_hex(const char *hex) {
 }
 
 //returns size of hex character pointer
-int getSize(const char *hex) {
-	char * p;
+int getSize(const char *hex) {   00000001
+	char * p = hex;
 	int size = 0;
-
 	while(*p == '-') {
 		p++;
 	}
@@ -95,7 +98,7 @@ int getSize(const char *hex) {
 		return 0;
 	}
 
-	for (p = hex; *p != '\0'; p++) {
+	for (; *p != '\0'; p++) {
 		
 		size++;
 	}
