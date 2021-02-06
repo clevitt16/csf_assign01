@@ -23,7 +23,18 @@ typedef struct {
 	ApInt *ap110660361;
 	ApInt *max1;
 	ApInt *minus1;
-	/* TODO: add additional fields of test fixture */
+	// ApInts multi-array representing positive numbers , increasing magnitude
+	ApInt *hex1;
+	ApInt *hex2;
+	ApInt *hex3;
+	ApInt *hex4;
+	ApInt *hex5;
+	// ApInts multi-array representing negative numbers , increasing magnitude
+	ApInt *nhex1;
+	ApInt *nhex2;
+	ApInt *nhex3;
+	ApInt *nhex4;
+	ApInt *nhex5;
 } TestObjs;
 
 TestObjs *setup(void);
@@ -76,7 +87,28 @@ TestObjs *setup(void) {
 	objs->ap110660361 = apint_create_from_u64(110660361UL);
 	objs->max1 = apint_create_from_u64(0xFFFFFFFFFFFFFFFFUL);
 	objs->minus1 = apint_negate(objs->ap1);
-	/* TODO: initialize additional members of test fixture */
+
+	char * h1 = "10000000000000000";
+	char * h2 = "a410000002200004500";
+	char * h3 = "000222bac888a410024da0022037804500";
+	char * h4 = "1234567899b4b3ca410024da0022037804501";
+	char * h5 = "100000000066cccfff8999b4b3ca410024da0022037804501";
+	objs->hex1 = apint_create_from_hex(h1);
+	objs->hex2 = apint_create_from_hex(h2);
+	objs->hex3 = apint_create_from_hex(h3);
+	objs->hex4 = apint_create_from_hex(h4);
+	objs->hex5 = apint_create_from_hex(h5);
+
+	char * n1 = "-10000000000000000";
+	char * n2 = "-a410000002200004500";
+	char * n3 = "-000222bac888a410024da0022037804500";
+	char * n4 = "-1234567899b4b3ca410024da0022037804501";
+	char * n5 = "-100000000066cccfff8999b4b3ca410024da0022037804501";
+	objs->nhex1 = apint_create_from_hex(n1);
+	objs->nhex2 = apint_create_from_hex(n2);
+	objs->nhex3 = apint_create_from_hex(n3);
+	objs->nhex4 = apint_create_from_hex(n4);
+	objs->nhex5 = apint_create_from_hex(n5);
 
 	return objs;
 }
