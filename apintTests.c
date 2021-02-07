@@ -119,15 +119,17 @@ TestObjs *setup(void) {
 	objs->hex4 = apint_create_from_hex("1234567899b4b3ca410024da0022037804501");
 	objs->hex5 = apint_create_from_hex("100000000066cccfff8999b4b3ca410024da0022037804501");
 	objs->hex6 = apint_create_from_hex("0000ff");
+	objs->hex7 = apint_create_from_hex("00000000");
+	objs->hex8 = apint_create_from_hex("001ABF00");
 
 	char * h6 = "0000ff";
 	char * h7 = "00000000";
 	char * h8 = "001ABF00";
 	char * h9 = "000007fb";
 	char * h10 = "1357def";
-	objs->hex6 = apint_create_from_hex(h6);
-	objs->hex7 = apint_create_from_hex(h7);
-	objs->hex8 = apint_create_from_hex(h8);
+	//objs->hex6 = apint_create_from_hex(h6);
+	//objs->hex7 = apint_create_from_hex(h7);
+	//objs->hex8 = apint_create_from_hex(h8);
 	objs->hex9 = apint_create_from_hex(h9);
 	objs->hex10 = apint_create_from_hex(h10);
 
@@ -201,7 +203,7 @@ void testCreateFromHex(TestObjs *objs) {
 	ASSERT(1UL == apint_get_bits(objs->hex1, 1));
 	ASSERT(0x0000ffUL == apint_get_bits(objs->hex6, 0));
 	ASSERT(0UL == apint_get_bits(objs->hex7, 0));
-	//ASSERT(0x001ABF00UL == apint_get_bits(objs->hex8, 0));
+	ASSERT(0x001ABF00UL == apint_get_bits(objs->hex8, 0));
 	ASSERT(0x000007fbUL == apint_get_bits(objs->hex9, 0));
 	ASSERT(0x1357defUL == apint_get_bits(objs->hex10, 0));
 	ASSERT(0x0000ffUL == apint_get_bits(objs->nhex6, 0));
