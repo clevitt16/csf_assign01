@@ -37,7 +37,7 @@ ApInt *apint_create_from_u64(uint64_t val) {
 // Peter
 // going to add assert statements to fully test "10000000000000000"
 ApInt *apint_create_from_hex(const char *hex) {
-	uint32_t size = getValidSize(hex); // get the number on non-zero hex digits
+	int size = getValidSize(hex); // get the number on non-zero hex digits
 	assert(size == 17);
 	if (size == -1) {  // case that the string was invalid
 		return NULL;
@@ -59,15 +59,15 @@ ApInt *apint_create_from_hex(const char *hex) {
 	uint64_t * data = calloc(len, sizeof(uint64_t));
 	uint32_t curIndex = apint.len - 1; // tracks current index index in uint64_t data array
 	assert(curIndex == 1U);
-	uint32_t fullSize = getFullSize(hex);
+	int fullSize = getFullSize(hex);
 	assert(fullSize == 17);
-	uint32_t startFromIndex = fullSize - size;
+	int startFromIndex = fullSize - size;
 	assert(startFromIndex == 0);
 	//000AFCB5    AFCB5
 	//size = 8    5
 	//  8 - 5 = 3, which is index of the first non-zero hex char
 
-	for (uint32_t i = 0; i < size; i++) { // for each valid hex character
+	for (int i = 0; i < size; i++) { // for each valid hex character
 		if (i % 16 == 0 && i != 0) { // every 16 hex characters, move to the next array index
 			curIndex--;
 		}
@@ -95,7 +95,7 @@ ApInt *apint_create_from_hex(const char *hex) {
 
 // returns number of hex characters in given string
 // assumes hex is null-terminated!!
-uint32_t getValidSize(const char *hex) {  
+int getValidSize(char *hex) {  
 	char * p = hex;
 	int size = 0;
 	if (*p == '-') {
@@ -114,7 +114,7 @@ uint32_t getValidSize(const char *hex) {
 	return size;
 }
 
-u_int32_t getFullSize(const char *hex) {
+int getFullSize(char *hex) {
 	char * s = hex;
 	int fullSize = 0;
 	if (*s == '-') {
@@ -129,7 +129,7 @@ u_int32_t getFullSize(const char *hex) {
 // used to get decimal value from a hex character
 uint64_t getVal(char hex) {
 
-	char c = *hex;
+	char c = hex;
 	int val = c - '0';
 	if (val <= 9) {
 		return val;
@@ -141,8 +141,9 @@ uint64_t getVal(char hex) {
 		return val - 39;
 	}
 	else {
-		return -1;
+		return;
 	}
+	
 }
 
 
@@ -432,6 +433,9 @@ int apint_compare(const ApInt *left, const ApInt *right) {
 
 // returns -1 if the magnitude of a is smaller than b, 1 if it's bigger, 0 if they're equal
 ApInt *compare_magnitudes(const ApInt *a, const ApInt *b) {
+	ApInt* left = a;
+	ApInt* right = b;
+	
 	if (left->len > right->len) { // case of different lengths
 		return 1;
 	}
