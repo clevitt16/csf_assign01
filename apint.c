@@ -73,7 +73,7 @@ ApInt *apint_create_from_hex(const char *hex) {
 	//size = 8    5
 	//  8 - 5 = 3, which is index of the first non-zero hex char
 
-	for (int i = startFromIndex; i < size + startFromIndex; i++) { // for each valid hex character
+	for (int i = startFromIndex; i < fullSize; i++) { // for each valid hex character
 		if (i % 16 == 0 && i != 0) { // every 16 hex characters, move to the next array index
 			curIndex--;
 		}
@@ -97,7 +97,7 @@ ApInt *apint_create_from_hex(const char *hex) {
 
 // returns number of hex characters in given string
 // assumes hex is null-terminated!!
-int getValidSize(const char *hex) {  
+int getValidSize(char *hex) {  
 	char * p = hex;
 	int size = 0;
 	if (*p == '-') {
@@ -119,7 +119,7 @@ int getValidSize(const char *hex) {
 	return size;
 }
 
-int getFullSize(const char *hex) {
+int getFullSize(char *hex) {
 	char * s = hex;
 	int fullSize = 0;
 
@@ -138,10 +138,10 @@ int getFullSize(const char *hex) {
 }
 
 // used to get decimal value from a hex character
-int getVal(const char *hex) {
+int getVal(char *hex) {
 
 	char c = *hex;
-	
+
 	int val = c - '0';
 	if (val <= 9) {
 		return val;
