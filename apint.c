@@ -138,7 +138,10 @@ int getFullSize(const char *hex) {
 }
 
 // used to get decimal value from a hex character
-int getVal(const char c) {
+int getVal(const char *hex) {
+
+	char c = *hex;
+	
 	int val = c - '0';
 	if (val <= 9) {
 		return val;
