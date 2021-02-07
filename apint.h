@@ -48,6 +48,7 @@ ApInt *subtract_magnitudes(const ApInt *a, const ApInt *b);
 int getValidSize(const char *hex);
 int getFullSize(const char *hex);
 int getVal(const char *hex);
+ApInt *compare_magnitudes(const ApInt *a, const ApInt *b);
 
 #ifdef __cplusplus
 }
