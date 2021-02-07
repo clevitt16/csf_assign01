@@ -36,14 +36,6 @@ ApInt *apint_create_from_u64(uint64_t val) {
 
 // Peter
 ApInt *apint_create_from_hex(const char *hex) {
-	//check if size is 0 
-	//check for negative in get size
-	// run a loop based on number of hex chars
-	//set variable to track cur index , start from len - 1
-	//every 16 hex char - decrease index by 1
-	//char convert to int 
-	//bitwise OR for left shifting by 4
-
 	int size = getValidSize(hex); // get the number on non-zero hex digits
 	if (size == -1) {  // case that the string was invalid
 		return NULL;
@@ -55,35 +47,26 @@ ApInt *apint_create_from_hex(const char *hex) {
 	uint32_t len = (unsigned)(((size - 1)/ 16) + 1); // length of uint64_t data array
 	apint.len = len;
 	if (hex[0] == '-') {
-		apint.flags = 1U;    
+		apint.flags = 1U;
+		hex++; 
 	} else {
 		apint.flags = 0U;
 	}
-	//add calloc
 	uint64_t * data = calloc(len, sizeof(uint64_t));
 	uint32_t curIndex = apint.len - 1; // tracks current index index in uint64_t data array
 
 	int fullSize = getFullSize(hex);
-	if (fullSize == -1) {
-		return NULL;
-	}
 	int startFromIndex = fullSize - size;
 
 	//000AFCB5    AFCB5
 	//size = 8    5
 	//  8 - 5 = 3, which is index of the first non-zero hex char
 
-	for (int i = startFromIndex; i < fullSize; i++) { // for each valid hex character
+	for (int i = 0; i < size; i++) { // for each valid hex character
 		if (i % 16 == 0 && i != 0) { // every 16 hex characters, move to the next array index
 			curIndex--;
 		}
-		int c = getVal(hex[i]);
-
-		if (c == -1) {  // need to free the pointers first!
-			free(data);
-			free(ptr);
-			return NULL;
-		}
+		int c = getVal(hex[startFromIndex + i]);
 
 		uint64_t bits = data[curIndex];
 		bits = bits << 4;
@@ -106,9 +89,6 @@ int getValidSize(const char *hex) {
 	while (*p == '0') {
 		p++;
 	}
-	if (!*p) { // is this necessary? this is checking for null terminator
-		return 0;
-	}
 	for (; *p != '\0'; p++) {
 		char digit = *p;
 		if (!((digit >= '0' && digit <= '9') || (digit >= 'a' && digit <= 'f') || (digit >= 'A' && digit <= 'F'))) {
@@ -122,26 +102,18 @@ int getValidSize(const char *hex) {
 int getFullSize(const char *hex) {
 	char * s = hex;
 	int fullSize = 0;
-
 	if (*s == '-') {
 		s++;
 	}
 	for (; *s != '\0'; s++) {
-		char digit = *s;
-		if (!((digit >= '0' && digit <= '9') || (digit >= 'a' && digit <= 'f') || (digit >= 'A' && digit <= 'F'))) {
-			return -1;
-		}
 		fullSize++;
 	}
-	
 	return fullSize;
 }
 
 // used to get decimal value from a hex character
 int getVal(const char *hex) {
-
 	char c = *hex;
-
 	int val = c - '0';
 	if (val <= 9) {
 		return val;

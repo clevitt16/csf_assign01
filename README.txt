@@ -29,3 +29,26 @@ from add_magnitudes
 		ApInt apint = {1U, 0U, data};
 		
 	}
+
+notes on create_from_hex
+
+	//check if size is 0 
+	//check for negative in get size
+	// run a loop based on number of hex chars
+	//set variable to track cur index , start from len - 1
+	//every 16 hex char - decrease index by 1
+	//char convert to int 
+	//bitwise OR for left shifting by 4
+
+from get_valid_size
+	if (!*p) { // is this necessary? this is checking for null terminator
+		return 0;
+	}
+
+from create_from_hex
+
+		if (c == -1) {  // need to free the pointers first!
+			free(data);
+			free(ptr);
+			return NULL;
+		}
