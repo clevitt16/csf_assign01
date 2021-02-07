@@ -157,7 +157,26 @@ void cleanup(TestObjs *objs) {
 	apint_destroy(objs->max1);
 	apint_destroy(objs->minus1);
 	/* TODO: destroy additional members of test fixture */
-
+	apint_destroy(objs->hex1);
+	apint_destroy(objs->hex2);
+	apint_destroy(objs->hex3);
+	apint_destroy(objs->hex4);
+	apint_destroy(objs->hex5);
+	apint_destroy(objs->hex6);
+	apint_destroy(objs->hex7);
+	apint_destroy(objs->hex8);
+	apint_destroy(objs->hex9);
+	apint_destroy(objs->hex10);
+	apint_destroy(objs->nhex1);
+	apint_destroy(objs->nhex2);
+	apint_destroy(objs->nhex3);
+	apint_destroy(objs->nhex4);
+	apint_destroy(objs->nhex5);
+	apint_destroy(objs->nhex6);
+	apint_destroy(objs->nhex7);
+	apint_destroy(objs->nhex8);
+	apint_destroy(objs->nhex9);
+	apint_destroy(objs->nhex10);
 	free(objs);
 }
 
@@ -373,7 +392,7 @@ void testSubSingle(TestObjs *objs) {
 
 	
 	// test involving larger values 
-	ApInt a, b;
+	ApInt * a, b;
 	a = apint_create_from_hex("7e35207519b6b06429378631ca460905c19537644f31dc50114e9dc90bb4e4ebc43cfebe6b86d");
 	b = apint_create_from_hex("9fa0fb165441ade7cb8b17c3ab3653465e09e8078e09631ec8f6fe3a5b301dc");
 	diff = apint_sub(a, b);
