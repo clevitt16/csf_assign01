@@ -183,14 +183,14 @@ void testCreateFromHex(TestObjs *objs) {
 
 
 	char * test;
-//TODO: May run into issues with ignoring leading zeroes in create from hex
+	//TODO: May run into issues with ignoring leading zeroes in create from hex
 	ASSERT(0 == strcmp("10000000000000000", (test = apint_format_as_hex(objs->hex1))));
 	free(test);
 	
 	ASSERT(0 == strcmp("a410000002200004500", (test = apint_format_as_hex(objs->hex2))));
 	free(test);
 
-	ASSERT(0 == strcmp("000222bac888a410024da0022037804500", (test = apint_format_as_hex(objs->hex3))));
+	ASSERT(0 == strcmp("222bac888a410024da0022037804500", (test = apint_format_as_hex(objs->hex3))));
 	free(test);
 
 	ASSERT(0 == strcmp("1234567899b4b3ca410024da0022037804501", (test = apint_format_as_hex(objs->hex4))));
@@ -200,16 +200,16 @@ void testCreateFromHex(TestObjs *objs) {
 	free(test);
 
 
-	ASSERT(0 == strcmp("0000ff", (test = apint_format_as_hex(objs->hex6))));
+	ASSERT(0 == strcmp("ff", (test = apint_format_as_hex(objs->hex6))));
 	free(test);
 
-	ASSERT(0 == strcmp("00000000", (test = apint_format_as_hex(objs->hex7))));
+	ASSERT(0 == strcmp("0", (test = apint_format_as_hex(objs->hex7))));
 	free(test);
 
-	ASSERT(0 == strcmp("001ABF00", (test = apint_format_as_hex(objs->hex8))));
+	ASSERT(0 == strcmp("1ABF00", (test = apint_format_as_hex(objs->hex8))));
 	free(test);
 
-	ASSERT(0 == strcmp("000007fb", (test = apint_format_as_hex(objs->hex9))));
+	ASSERT(0 == strcmp("7fb", (test = apint_format_as_hex(objs->hex9))));
 	free(test);
 
 	ASSERT(0 == strcmp("1357def", (test = apint_format_as_hex(objs->hex10))));
@@ -372,7 +372,7 @@ void testSubSingle(TestObjs *objs) {
 	free(s);
 
 	
-	/* test involving larger values 
+	// test involving larger values 
 	a = apint_create_from_hex("7e35207519b6b06429378631ca460905c19537644f31dc50114e9dc90bb4e4ebc43cfebe6b86d");
 	b = apint_create_from_hex("9fa0fb165441ade7cb8b17c3ab3653465e09e8078e09631ec8f6fe3a5b301dc");
 	diff = apint_sub(a, b);
@@ -383,7 +383,7 @@ void testSubSingle(TestObjs *objs) {
 	apint_destroy(a);
 	free(s);
 
-	/* test involving larger values (with a negative difference) 
+	// test involving larger values (with a negative difference) 
 	a = apint_create_from_hex("9fa0fb165441ade7cb8b17c3ab3653465e09e8078e09631ec8f6fe3a5b301dc");
 	b = apint_create_from_hex("7e35207519b6b06429378631ca460905c19537644f31dc50114e9dc90bb4e4ebc43cfebe6b86d");
 	diff = apint_sub(a, b);
@@ -393,7 +393,7 @@ void testSubSingle(TestObjs *objs) {
 	apint_destroy(b);
 	apint_destroy(a);
 	free(s);
-	*/
+	
 }
 
 void testCompareSingle(TestObjs *objs) {
