@@ -542,7 +542,7 @@ ApInt *subtract_magnitudes(const ApInt *a, const ApInt *b) {
 		if (index >= b->len) {
 			bVal = 0UL;
 		} else {
-			bVal = b->data[i];
+			bVal = b->data[index];
 		}
 		uint64_t diff = a->data[index] - bVal - borrow;
 		if (diff >= a->data[index] && bVal != 0UL) {
