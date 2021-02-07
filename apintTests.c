@@ -154,7 +154,7 @@ TestObjs *setup(void) {
 	objs->nhex8 = apint_create_from_hex(n8);
 	objs->nhex9 = apint_create_from_hex(n9);
 	objs->nhex10 = apint_create_from_hex(n10);
-*/
+
 	return objs;
 }
 
