@@ -97,7 +97,7 @@ ApInt *apint_create_from_hex(const char *hex) {
 
 // returns number of hex characters in given string
 // assumes hex is null-terminated!!
-int getValidSize(char *hex) {  
+int getValidSize(const char *hex) {  
 	char * p = hex;
 	int size = 0;
 	if (*p == '-') {
@@ -119,7 +119,7 @@ int getValidSize(char *hex) {
 	return size;
 }
 
-int getFullSize(char *hex) {
+int getFullSize(const char *hex) {
 	char * s = hex;
 	int fullSize = 0;
 
@@ -138,7 +138,7 @@ int getFullSize(char *hex) {
 }
 
 // used to get decimal value from a hex character
-int getVal(char *hex) {
+int getVal(const char *hex) {
 
 	char c = *hex;
 
