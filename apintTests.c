@@ -82,7 +82,7 @@ int main(int argc, char **argv) {
 
 	TEST(testCreateFromU64);
 	TEST(testCreateFromHex);
-/*	TEST(testApintIsZero);
+	TEST(testApintIsZero);
 	TEST(testApintIsNegative);
 	TEST(testApintGetBits);
 	TEST(testHighestBitSet);
@@ -95,7 +95,7 @@ int main(int argc, char **argv) {
 	TEST(testCompareSingle); 
 	TEST(testCompare);
 	
-	*/
+	
 
 	TEST_FINI();
 }
@@ -114,7 +114,7 @@ TestObjs *setup(void) {
 	char * h4 = "1234567899b4b3ca410024da0022037804501";
 	char * h5 = "100000000066cccfff8999b4b3ca410024da0022037804501"; */
 	objs->hex1 = apint_create_from_hex("10000000000000000");
-/*	objs->hex2 = apint_create_from_hex("a410000002200004500");
+	objs->hex2 = apint_create_from_hex("a410000002200004500");
 	objs->hex3 = apint_create_from_hex("000222bac888a410024da0022037804500");
 	objs->hex4 = apint_create_from_hex("1234567899b4b3ca410024da0022037804501");
 	objs->hex5 = apint_create_from_hex("100000000066cccfff8999b4b3ca410024da0022037804501");
@@ -166,7 +166,7 @@ void cleanup(TestObjs *objs) {
 	apint_destroy(objs->minus1);
 	/* TODO: destroy additional members of test fixture */
 	apint_destroy(objs->hex1);
-/*	apint_destroy(objs->hex2);
+	apint_destroy(objs->hex2);
 	apint_destroy(objs->hex3);
 	apint_destroy(objs->hex4);
 	apint_destroy(objs->hex5);
@@ -184,7 +184,7 @@ void cleanup(TestObjs *objs) {
 	apint_destroy(objs->nhex7);
 	apint_destroy(objs->nhex8);
 	apint_destroy(objs->nhex9);
-	apint_destroy(objs->nhex10); */
+	apint_destroy(objs->nhex10); 
 	free(objs);
 }
 
@@ -199,7 +199,7 @@ void testCreateFromHex(TestObjs *objs) {
 
 	ASSERT(0UL == apint_get_bits(objs->hex1, 0));
 	ASSERT(1UL == apint_get_bits(objs->hex1, 1));
-/*	ASSERT(0x0000ffUL == apint_get_bits(objs->hex6, 0));
+	ASSERT(0x0000ffUL == apint_get_bits(objs->hex6, 0));
 	ASSERT(0UL == apint_get_bits(objs->hex7, 0));
 	ASSERT(0x001ABF00UL == apint_get_bits(objs->hex8, 0));
 	ASSERT(0x000007fbUL == apint_get_bits(objs->hex9, 0));
@@ -208,8 +208,7 @@ void testCreateFromHex(TestObjs *objs) {
 	ASSERT(0UL == apint_get_bits(objs->nhex7, 0));
 	ASSERT(0x001ABF00UL == apint_get_bits(objs->nhex8, 0));
 	ASSERT(0x000007fbUL == apint_get_bits(objs->nhex9, 0));
-	ASSERT(0x1357defUL == apint_get_bits(objs->nhex10, 0)); */
-/*
+	ASSERT(0x1357defUL == apint_get_bits(objs->nhex10, 0)); 
 
 	char * test;
 	//TODO: May run into issues with ignoring leading zeroes in create from hex
@@ -242,7 +241,7 @@ void testCreateFromHex(TestObjs *objs) {
 	free(test);
 
 	ASSERT(0 == strcmp("1357def", (test = apint_format_as_hex(objs->hex10))));
-	free(test);  */
+	free(test);  
 }
 
 void testApintIsZero(TestObjs *objs) {
