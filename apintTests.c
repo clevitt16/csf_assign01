@@ -76,7 +76,7 @@ int main(int argc, char **argv) {
 		 */
 		tctest_testname_to_execute = argv[1];
 	}
-
+/*
 	TEST(testCreateFromU64);
 	TEST(testCreateFromHex);
 	TEST(testApintIsZero);
@@ -87,7 +87,7 @@ int main(int argc, char **argv) {
 	TEST(testNegate);
 	TEST(testAddSingle);
 	TEST(testSubSingle);
-	TEST(testCompareSingle);
+	TEST(testCompareSingle); */
 	/* TODO: use TEST macro to execute more test functions */
 
 	TEST_FINI();
