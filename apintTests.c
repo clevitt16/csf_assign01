@@ -201,6 +201,23 @@ void testCreateFromHex(TestObjs *objs) {
 
 	ASSERT(0UL == apint_get_bits(objs->hex1, 0));
 	ASSERT(1UL == apint_get_bits(objs->hex1, 1));
+
+	/*char * h2 = "a410000002200004500";
+	char * h3 = "000222bac888a410024da0022037804500";
+	char * h4 = "1234567899b4b3ca410024da0022037804501";
+	char * h5 = "100000000066cccfff8999b4b3ca410024da0022037804501"; */
+
+
+	ASSERT(0x000002200004500UL == apint_get_bits(objs->hex2, 0));
+	ASSERT(0xda0022037804500UL == apint_get_bits(objs->hex3, 0));
+	ASSERT(0xda0022037804501UL == apint_get_bits(objs->hex4, 0));
+	ASSERT(0xda0022037804501UL == apint_get_bits(objs->hex5, 0));
+
+	ASSERT(0xa410UL == apint_get_bits(objs->hex2, 1));
+	ASSERT(0x22bac888a410024UL == apint_get_bits(objs->hex3, 1));
+	ASSERT(0x899b4b3ca410024UL == apint_get_bits(objs->hex4, 1));
+	ASSERT(0x999b4b3ca410024UL == apint_get_bits(objs->hex5, 1));
+
 	ASSERT(0x0000ffUL == apint_get_bits(objs->hex6, 0));
 	ASSERT(0UL == apint_get_bits(objs->hex7, 0));
 	ASSERT(0x001ABF00UL == apint_get_bits(objs->hex8, 0));
