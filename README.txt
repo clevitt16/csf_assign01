@@ -52,3 +52,17 @@ from create_from_hex
 			free(ptr);
 			return NULL;
 		}
+
+
+from compare 
+
+	if (leftSign == 0) { // positive values:
+		if (left->data[index] > right->data[index]) {
+			return 1;
+		}
+		return -1;
+	} // negative values:
+	if (left->data[index] < right->data[index]){
+			return 1;
+		}
+	return -1;

@@ -35,8 +35,10 @@ ApInt *apint_create_from_u64(uint64_t val) {
 }
 
 // Peter
+// going to add assert statements to fully test "10000000000000000"
 ApInt *apint_create_from_hex(const char *hex) {
 	int size = getValidSize(hex); // get the number on non-zero hex digits
+	assert(size == 17);
 	if (size == -1) {  // case that the string was invalid
 		return NULL;
 	} else if (size == 0) {
@@ -45,6 +47,7 @@ ApInt *apint_create_from_hex(const char *hex) {
 	ApInt * ptr = malloc(sizeof(ApInt));
 	ApInt apint;
 	uint32_t len = (unsigned)(((size - 1)/ 16) + 1); // length of uint64_t data array
+	assert(len == 2);
 	apint.len = len;
 	if (hex[0] == '-') {
 		apint.flags = 1U;
@@ -52,12 +55,14 @@ ApInt *apint_create_from_hex(const char *hex) {
 	} else {
 		apint.flags = 0U;
 	}
+	assert(apint.flags == 0U);
 	uint64_t * data = calloc(len, sizeof(uint64_t));
 	uint32_t curIndex = apint.len - 1; // tracks current index index in uint64_t data array
-
+	assert(curIndex == 1U);
 	int fullSize = getFullSize(hex);
+	assert(fullSize == 17);
 	int startFromIndex = fullSize - size;
-
+	assert(startFromIndex == 0);
 	//000AFCB5    AFCB5
 	//size = 8    5
 	//  8 - 5 = 3, which is index of the first non-zero hex char
@@ -72,6 +77,16 @@ ApInt *apint_create_from_hex(const char *hex) {
 		bits = bits << 4;
 		bits = bits | c;
 		data[curIndex] = bits;
+
+		if (curIndex == 1) {
+			assert(c == 0);
+			assert(data[curIndex] == 0UL);
+		}
+		if (curIndex == 0) {
+			assert(c == 1);
+			assert(data[curIndex] == 1UL);
+		}
+		assert(curIndex >= 0);
 	}
 	apint.data = data;
 	*ptr = apint;
@@ -338,19 +353,20 @@ ApInt *apint_add(const ApInt *a, const ApInt *b) {
 		sum->flags = 1UL;
 		return sum;
 	} // case that one is positive, one is negative
-	uint64_t d = a->data[0];
-	uint64_t e = b->data[0];
+	int cmp = compare_magnitudes(a, b);
 	ApInt *diff;
-	if (d > e) { // magnitude of a is greater
+	if (cmp > 0) { // magnitude of a is greater
 		diff = subtract_magnitudes(a, b);
 		if (apint_is_negative(a)) {
 			diff->flags = 1UL;
 		}
-		return diff;
-	}  // magnitude of b is greater
-	diff = subtract_magnitudes(b, a);
-	if (apint_is_negative(b) && d != e) {
-		diff->flags = 1UL;
+	} else if (cmp > 0) { // magnitude of b is greater
+		diff = subtract_magnitudes(b, a);
+		if (apint_is_negative(b)) {
+			diff->flags = 1UL;
+		}
+	} else { // cmp == 0
+		return apint_create_from_u64(0UL);
 	}
 	return diff;
 }
@@ -378,7 +394,6 @@ ApInt *apint_sub(const ApInt *a, const ApInt *b) {
 }
 
 /*
- * TO DO - Casey
  * 
  * Compares the values represented by the given ApInt instances. Returns
  * a positive value if left is greater and a negative value if right is
@@ -393,28 +408,36 @@ ApInt *apint_sub(const ApInt *a, const ApInt *b) {
  * 
  */
 int apint_compare(const ApInt *left, const ApInt *right) {
-	if (apint_is_zero(left) && apint_is_zero(right)) { // can delete
-		return 0;
-	}
 	int leftSign = apint_is_negative(left);
 	int rightSign = apint_is_negative(right);
 	if (leftSign != rightSign) { // case that one is positive and the other negative
 		return rightSign - leftSign;
 	} 
-	if (left->len > right->len) { // case of same sign, different lengths
-		if (leftSign == 0) {
-			return 1;
-		}
+	// assuming they have the same sign
+	int cmp = compare_magnitudes(left, right);
+	if (cmp == 0) {
+		return 0;
+	} else if (cmp < 0 && leftSign == 0) { // positives, left has smaller magnitude
+		return -1;
+	} else if (cmp < 0 && leftSign == 1) { // negatives, left has smaller magnitude
+		return 1;
+	} else if (cmp > 0 && leftSign == 0) { // positives, left has bigger magnitude
+		return 1;
+	} else { // negatives, left has bigger magnitude
 		return -1;
 	}
-	else if (right->len > left->len) {
-		if (rightSign == 0) {
-			return -1;
-		}
+
+}
+
+// returns -1 if the magnitude of a is smaller than b, 1 if it's bigger, 0 if they're equal
+ApInt *compare_magnitudes(const ApInt *a, const ApInt *b) {
+	if (left->len > right->len) { // case of different lengths
 		return 1;
 	}
-	
-	// apints have the same length and are either both positive or both negative
+	else if (right->len > left->len) {
+		return -1;
+	}
+	// apints have the same length
 	// will compare largest place values
 	uint32_t index = left->len - 1;
 	while (left->data[index] == right->data[index]) {
@@ -423,17 +446,13 @@ int apint_compare(const ApInt *left, const ApInt *right) {
 		}
 		index--;
 	} // most significant values that differ are at index
-	if (leftSign == 0) { // positive values:
-		if (left->data[index] > right->data[index]) {
-			return 1;
-		}
-		return -1;
-	} // negative values:
-	if (left->data[index] < right->data[index]){
-			return 1;
-		}
+	if (left->data[index] > right->data[index]) {
+		return 1;
+	}
 	return -1;
 }
+
+
 /* 
  * Helper function for apint_add and apint_sub, computes the sum of the magnitudes
  * represented by two different pointers to ApInt objects. Returns a new ApInt
