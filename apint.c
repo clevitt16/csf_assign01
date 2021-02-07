@@ -59,7 +59,7 @@ ApInt *apint_create_from_hex(const char *hex) {
 	} else {
 		apint.flags = 0U;
 	}
-	
+	//add calloc
 	uint64_t * data = calloc(sizeof(uint64_t) * len);
 	uint32_t curIndex = apint.len - 1; // tracks current index index in uint64_t data array
 
