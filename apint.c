@@ -44,9 +44,9 @@ ApInt *apint_create_from_hex(const char *hex) {
 	} else if (size == 0) {
 		return apint_create_from_u64(0UL);
 	}
-	ApInt * ptr = malloc(sizeof(ApInt));
+	ApInt * ptr = (ApInt*)malloc(sizeof(ApInt));
 	ApInt apint;
-	uint32_t len = (unsigned)(((size - 1)/ 16) + 1); // length of uint64_t data array
+	uint32_t len = (((size - 1)/ 16) + 1); // length of uint64_t data array
 	assert(len == 2);
 	apint.len = len;
 	if (hex[0] == '-') {
@@ -71,7 +71,7 @@ ApInt *apint_create_from_hex(const char *hex) {
 		if (i % 16 == 0 && i != 0) { // every 16 hex characters, move to the next array index
 			curIndex--;
 		}
-		int c = getVal(hex[startFromIndex + i]);
+		uint64_t c = getVal(hex[startFromIndex + i]);
 
 		uint64_t bits = data[curIndex];
 		bits = bits << 4;
@@ -95,7 +95,7 @@ ApInt *apint_create_from_hex(const char *hex) {
 
 // returns number of hex characters in given string
 // assumes hex is null-terminated!!
-int getValidSize(const char *hex) {  
+int getValidSize(char *hex) {  
 	char * p = hex;
 	int size = 0;
 	if (*p == '-') {
@@ -114,7 +114,7 @@ int getValidSize(const char *hex) {
 	return size;
 }
 
-int getFullSize(const char *hex) {
+int getFullSize(char *hex) {
 	char * s = hex;
 	int fullSize = 0;
 	if (*s == '-') {
@@ -127,8 +127,9 @@ int getFullSize(const char *hex) {
 }
 
 // used to get decimal value from a hex character
-int getVal(const char *hex) {
-	char c = *hex;
+uint64_t getVal(char hex) {
+
+	char c = hex;
 	int val = c - '0';
 	if (val <= 9) {
 		return val;
@@ -140,8 +141,9 @@ int getVal(const char *hex) {
 		return val - 39;
 	}
 	else {
-		return -1;
+		return;
 	}
+	
 }
 
 
@@ -430,7 +432,12 @@ int apint_compare(const ApInt *left, const ApInt *right) {
 }
 
 // returns -1 if the magnitude of a is smaller than b, 1 if it's bigger, 0 if they're equal
-ApInt *compare_magnitudes(const ApInt *a, const ApInt *b) {
+
+
+int compare_magnitudes( const ApInt *a, const ApInt *b) {
+	ApInt* left = a;
+	ApInt* right = b;
+
 	if (left->len > right->len) { // case of different lengths
 		return 1;
 	}

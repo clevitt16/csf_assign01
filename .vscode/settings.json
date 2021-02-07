@@ -1,6 +1,7 @@
 {
     "C_Cpp.errorSquiggles": "Disabled",
     "files.associations": {
-        "ios": "c"
+        "ios": "c",
+        "algorithm": "c"
     }
 }
