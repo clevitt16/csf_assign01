@@ -115,7 +115,7 @@ TestObjs *setup(void) {
 	char * h5 = "100000000066cccfff8999b4b3ca410024da0022037804501"; */
 	objs->hex1 = apint_create_from_hex("10000000000000000");
 	objs->hex2 = apint_create_from_hex("a410000002200004500");
-	objs->hex3 = apint_create_from_hex("000222bac888a410024da0022037804500");
+	objs->hex3 = apint_create_from_hex("000222bac888a41002 4da0022037804500"); // size = 31 1st index is 15
 	objs->hex4 = apint_create_from_hex("1234567899b4b3ca410024da0022037804501");
 	objs->hex5 = apint_create_from_hex("100000000066cccfff8999b4b3ca410024da0022037804501");
 	objs->hex6 = apint_create_from_hex("0000ff");
