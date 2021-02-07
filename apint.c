@@ -60,7 +60,7 @@ ApInt *apint_create_from_hex(const char *hex) {
 		apint.flags = 0U;
 	}
 	
-	uint64_t * data = malloc(sizeof(uint64_t) * len);
+	uint64_t * data = calloc(sizeof(uint64_t) * len);
 	uint32_t curIndex = apint.len - 1; // tracks current index index in uint64_t data array
 
 	int fullSize = getFullSize(hex);
