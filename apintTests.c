@@ -244,6 +244,7 @@ void testCreateFromHex(TestObjs *objs) {
 	free(test);  
 }
 
+
 void testApintIsZero(TestObjs *objs) {
 	ASSERT(apint_is_zero(objs->ap0));
 	ASSERT(!apint_is_zero(objs->ap1));
