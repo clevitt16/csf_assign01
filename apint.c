@@ -35,10 +35,8 @@ ApInt *apint_create_from_u64(uint64_t val) {
 }
 
 // Peter
-// going to add assert statements to fully test "10000000000000000"
 ApInt *apint_create_from_hex(const char *hex) {
 	int size = getValidSize(hex); // get the number on non-zero hex digits
-	//assert(size == 17);
 	if (size == -1) {  // case that the string was invalid
 		return NULL;
 	} else if (size == 0) {
@@ -47,7 +45,6 @@ ApInt *apint_create_from_hex(const char *hex) {
 	ApInt * ptr = (ApInt*)malloc(sizeof(ApInt));
 	ApInt apint;
 	uint32_t len = (((size - 1)/ 16) + 1); // length of uint64_t data array
-	//assert(len == 2);
 	apint.len = len;
 	if (hex[0] == '-') {
 		apint.flags = 1U;
@@ -55,37 +52,26 @@ ApInt *apint_create_from_hex(const char *hex) {
 	} else {
 		apint.flags = 0U;
 	}
-	//assert(apint.flags == 0U);
 	uint64_t * data = calloc(len, sizeof(uint64_t));
 	uint32_t curIndex = 0; // tracks current index index in uint64_t data array
-	//assert(curIndex == 0U);
-	int fullSize = getFullSize(hex);
-
-	//assert(startFromIndex == 0);
-	//000AFCB5    AFCB5
-	//size = 8    5
-	//  8 - 5 = 3, which is index of the first non-zero hex char
-
+	int fullSize = getFullSize(hex); // possibly unneccessary
+	while (*hex == '0') {
+		hex++;
+	}
 	for (int i = 0; i < size; i++) { // for each valid hex character
 		if (i % 16 == 0 && i != 0) { // every 16 hex characters, move to the next array index
 			curIndex++;
 		}
-		uint64_t c = getVal(hex[fullSize - 1 - i]);
-
+		uint64_t c;
+		if (curIndex == len-1) {
+			c = getVal(hex[i - curIndex * 16]);
+		} else {
+			c = getVal(hex[size - 16*(curIndex+1) + i]);
+		}
 		uint64_t bits = data[curIndex];
 		bits = bits << 4;
 		bits = bits | c;
 		data[curIndex] = bits;
-
-		/*if (curIndex == 1) {
-			//assert(c == 0);
-			//assert(data[curIndex] == 0UL);
-		}*/
-		/*if (curIndex == 0) {
-			assert(c == 1);
-			assert(data[curIndex] == 1UL);
-		}*/
-		//assert(curIndex >= 0);
 	}
 	apint.data = data;
 	*ptr = apint;

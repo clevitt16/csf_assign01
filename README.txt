@@ -53,6 +53,10 @@ from create_from_hex
 			return NULL;
 		}
 
+			//000AFCB5    AFCB5
+	//size = 8    5
+	//  8 - 5 = 3, which is index of the first non-zero hex char
+
 
 from compare 
 
