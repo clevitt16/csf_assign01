@@ -57,36 +57,35 @@ ApInt *apint_create_from_hex(const char *hex) {
 	}
 	assert(apint.flags == 0U);
 	uint64_t * data = calloc(len, sizeof(uint64_t));
-	uint32_t curIndex = apint.len - 1; // tracks current index index in uint64_t data array
-	assert(curIndex == 1U);
+	uint32_t curIndex = 0; // tracks current index index in uint64_t data array
+	assert(curIndex == 0U);
 	int fullSize = getFullSize(hex);
 	assert(fullSize == 17);
-	int startFromIndex = fullSize - size;
-	assert(startFromIndex == 0);
+	// int startFromIndex = fullSize - size;
+	// assert(startFromIndex == 0);
 	//000AFCB5    AFCB5
 	//size = 8    5
 	//  8 - 5 = 3, which is index of the first non-zero hex char
 
 	for (int i = 0; i < size; i++) { // for each valid hex character
 		if (i % 16 == 0 && i != 0) { // every 16 hex characters, move to the next array index
-			curIndex--;
+			curIndex++;
 		}
-		uint64_t c = getVal(hex[startFromIndex + i]);
+		uint64_t c = getVal(hex[fullSize - 1 - i]);
 
 		uint64_t bits = data[curIndex];
 		bits = bits << 4;
 		bits = bits | c;
 		data[curIndex] = bits;
 
-		if (curIndex == 1) {
+		if (curIndex == 0) {
 			assert(c == 0);
 			assert(data[curIndex] == 0UL);
 		}
-		if (curIndex == 0) {
+		if (curIndex == 1) {
 			assert(c == 1);
 			assert(data[curIndex] == 1UL);
 		}
-		assert(curIndex >= 0);
 	}
 	apint.data = data;
 	*ptr = apint;
