@@ -76,10 +76,10 @@ int main(int argc, char **argv) {
 		 */
 		tctest_testname_to_execute = argv[1];
 	}
-/*
+
 	TEST(testCreateFromU64);
 	TEST(testCreateFromHex);
-	TEST(testApintIsZero);
+/*	TEST(testApintIsZero);
 	TEST(testApintIsNegative);
 	TEST(testApintGetBits);
 	TEST(testHighestBitSet);
