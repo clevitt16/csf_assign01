@@ -57,11 +57,10 @@ ApInt *apint_create_from_hex(const char *hex) {
 	}
 	//assert(apint.flags == 0U);
 	uint64_t * data = calloc(len, sizeof(uint64_t));
-	uint32_t curIndex = apint.len - 1; // tracks current index index in uint64_t data array
-	//assert(curIndex == 1U);
+	uint32_t curIndex = 0; // tracks current index index in uint64_t data array
+	//assert(curIndex == 0U);
 	int fullSize = getFullSize(hex);
-	//assert(fullSize == 17);
-	int startFromIndex = fullSize - size;
+
 	//assert(startFromIndex == 0);
 	//000AFCB5    AFCB5
 	//size = 8    5
@@ -69,9 +68,9 @@ ApInt *apint_create_from_hex(const char *hex) {
 
 	for (int i = 0; i < size; i++) { // for each valid hex character
 		if (i % 16 == 0 && i != 0) { // every 16 hex characters, move to the next array index
-			curIndex--;
+			curIndex++;
 		}
-		uint64_t c = getVal(hex[startFromIndex + i]);
+		uint64_t c = getVal(hex[fullSize - 1 - i]);
 
 		uint64_t bits = data[curIndex];
 		bits = bits << 4;
