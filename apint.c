@@ -434,26 +434,23 @@ int apint_compare(const ApInt *left, const ApInt *right) {
 // returns -1 if the magnitude of a is smaller than b, 1 if it's bigger, 0 if they're equal
 
 
-int compare_magnitudes( const ApInt *a, const ApInt *b) {
-	ApInt* left = a;
-	ApInt* right = b;
-
-	if (left->len > right->len) { // case of different lengths
+int compare_magnitudes(const ApInt *a, const ApInt *b) {
+	if (a->len > b->len) { // case of different lengths
 		return 1;
 	}
-	else if (right->len > left->len) {
+	else if (b->len > a->len) {
 		return -1;
 	}
 	// apints have the same length
 	// will compare largest place values
-	uint32_t index = left->len - 1;
-	while (left->data[index] == right->data[index]) {
+	uint32_t index = a->len - 1;
+	while (a->data[index] == b->data[index]) {
 		if (index == 0U) {
 			return 0;
 		}
 		index--;
 	} // most significant values that differ are at index
-	if (left->data[index] > right->data[index]) {
+	if (a->data[index] > b->data[index]) {
 		return 1;
 	}
 	return -1;
