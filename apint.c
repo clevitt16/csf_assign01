@@ -38,7 +38,7 @@ ApInt *apint_create_from_u64(uint64_t val) {
 // going to add assert statements to fully test "10000000000000000"
 ApInt *apint_create_from_hex(const char *hex) {
 	int size = getValidSize(hex); // get the number on non-zero hex digits
-	// assert(size == 17);
+	//assert(size == 17);
 	if (size == -1) {  // case that the string was invalid
 		return NULL;
 	} else if (size == 0) {
@@ -47,7 +47,7 @@ ApInt *apint_create_from_hex(const char *hex) {
 	ApInt * ptr = (ApInt*)malloc(sizeof(ApInt));
 	ApInt apint;
 	uint32_t len = (((size - 1)/ 16) + 1); // length of uint64_t data array
-	// assert(len == 2);
+	//assert(len == 2);
 	apint.len = len;
 	if (hex[0] == '-') {
 		apint.flags = 1U;
@@ -55,35 +55,38 @@ ApInt *apint_create_from_hex(const char *hex) {
 	} else {
 		apint.flags = 0U;
 	}
-	// assert(apint.flags == 0U);
+	//assert(apint.flags == 0U);
 	uint64_t * data = calloc(len, sizeof(uint64_t));
-	uint32_t curIndex = 0; // tracks current index index in uint64_t data array
-	// assert(curIndex == 0U);
+	uint32_t curIndex = apint.len - 1; // tracks current index index in uint64_t data array
+	//assert(curIndex == 1U);
 	int fullSize = getFullSize(hex);
-	// assert(fullSize == 17);
+	//assert(fullSize == 17);
+	int startFromIndex = fullSize - size;
+	//assert(startFromIndex == 0);
 	//000AFCB5    AFCB5
 	//size = 8    5
 	//  8 - 5 = 3, which is index of the first non-zero hex char
 
 	for (int i = 0; i < size; i++) { // for each valid hex character
 		if (i % 16 == 0 && i != 0) { // every 16 hex characters, move to the next array index
-			curIndex++;
+			curIndex--;
 		}
-		uint64_t c = getVal(hex[fullSize - 1 - i]);
+		uint64_t c = getVal(hex[startFromIndex + i]);
 
 		uint64_t bits = data[curIndex];
 		bits = bits << 4;
 		bits = bits | c;
 		data[curIndex] = bits;
-/*
-		if (curIndex == 0) {
-			assert(c == 0);
-			assert(data[curIndex] == 0UL);
-		}
-		if (curIndex == 1) {
+
+		/*if (curIndex == 1) {
+			//assert(c == 0);
+			//assert(data[curIndex] == 0UL);
+		}*/
+		/*if (curIndex == 0) {
 			assert(c == 1);
 			assert(data[curIndex] == 1UL);
-		} */
+		}*/
+		//assert(curIndex >= 0);
 	}
 	apint.data = data;
 	*ptr = apint;
@@ -431,23 +434,26 @@ int apint_compare(const ApInt *left, const ApInt *right) {
 // returns -1 if the magnitude of a is smaller than b, 1 if it's bigger, 0 if they're equal
 
 
-int compare_magnitudes(const ApInt *a, const ApInt *b) {
-	if (a->len > b->len) { // case of different lengths
+int compare_magnitudes( onst ApInt *a, const ApInt *b) {
+	ApInt* left = a;
+	ApInt* right = b;
+
+	if (left->len > right->len) { // case of different lengths
 		return 1;
 	}
-	else if (b->len > a->len) {
+	else if (right->len > left->len) {
 		return -1;
 	}
 	// apints have the same length
 	// will compare largest place values
-	uint32_t index = a->len - 1;
-	while (a->data[index] == b->data[index]) {
+	uint32_t index = left->len - 1;
+	while (left->data[index] == right->data[index]) {
 		if (index == 0U) {
 			return 0;
 		}
 		index--;
 	} // most significant values that differ are at index
-	if (a->data[index] > b->data[index]) {
+	if (left->data[index] > right->data[index]) {
 		return 1;
 	}
 	return -1;
