@@ -432,10 +432,12 @@ int apint_compare(const ApInt *left, const ApInt *right) {
 }
 
 // returns -1 if the magnitude of a is smaller than b, 1 if it's bigger, 0 if they're equal
-ApInt *compare_magnitudes(const ApInt *a, const ApInt *b) {
+
+
+int compare_magnitudes( const ApInt *a, const ApInt *b) {
 	ApInt* left = a;
 	ApInt* right = b;
-	
+
 	if (left->len > right->len) { // case of different lengths
 		return 1;
 	}
