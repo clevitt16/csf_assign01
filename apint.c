@@ -272,6 +272,10 @@ char *apint_format_as_hex(const ApInt *ap) {
 			num -= hexDigit;
 			num = num/16;
 		}
+		while (i != ap->len - 1 && hexLength % 16 != 0) {
+			backwardsHex[hexLength] = '0';
+			hexLength++;
+		}
 	}
 	if (apint_is_negative(ap)) {
 		backwardsHex[hexLength] = '-';
