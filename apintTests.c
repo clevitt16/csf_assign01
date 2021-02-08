@@ -64,7 +64,7 @@ void testNegate(TestObjs *objs);
 void testAddSingle(TestObjs *objs);
 void testAdd(TestObjs *objs);
 void testSubSingle(TestObjs *objs);
-void testSub(TestObjs *objs);
+void testSub();
 void testCompareSingle(TestObjs *objs);
 void testCompare(TestObjs *objs);
 /* TODO: add more test function prototypes */
@@ -452,7 +452,7 @@ void testSubSingle(TestObjs *objs) {
 	free(s);
 }
 	
-void testSub(TestObjs *objs) {
+void testSub() {
 	ApInt* diff;
 	char * s;
 	ApInt * a = apint_create_from_hex("7e35207519b6b06429378631ca460905c19537644f31dc50114e9dc90bb4e4ebc43cfebe6b86d");
