@@ -209,7 +209,7 @@ void testCreateFromHex(TestObjs *objs) {
 
 
 	ASSERT(0x000002200004500UL == apint_get_bits(objs->hex2, 0));
-	ASSERT(0xda0022037804500UL == apint_get_bits(objs->hex3, 0));
+	ASSERT(0x4da0022037804500UL == apint_get_bits(objs->hex3, 0));
 	ASSERT(0xda0022037804501UL == apint_get_bits(objs->hex4, 0));
 	ASSERT(0xda0022037804501UL == apint_get_bits(objs->hex5, 0));
 
