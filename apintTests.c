@@ -343,11 +343,6 @@ void testAdd(TestObjs *objs) {
 	ASSERT(0 == strcmp("0", (s = apint_format_as_hex(sum))));
 	apint_destroy(sum);
 	free(s);
-	/* 10000000000000000 + -1357def = fffffffffeca8211 */
-	sum = apint_add(objs->hex1, objs->nhex10);
-	ASSERT(0 == strcmp("fffffffffeca8211", (s = apint_format_as_hex(sum))));
-	apint_destroy(sum);
-	free(s);
 	/* -10000000000000000 + -a410000002200004500 = -a420000002200004500 */
 	sum = apint_add(objs->nhex1, objs->nhex2);
 	ASSERT(0 == strcmp("-a420000002200004500", (s = apint_format_as_hex(sum))));
