@@ -128,7 +128,7 @@ uint64_t getVal(char hex) {
 		return val - 39;
 	}
 	else {
-		return;
+		return -1;
 	}
 	
 }
