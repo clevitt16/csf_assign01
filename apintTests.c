@@ -200,11 +200,6 @@ void testCreateFromHex(TestObjs *objs) {
 	ASSERT(0UL == apint_get_bits(objs->hex1, 0));
 	ASSERT(1UL == apint_get_bits(objs->hex1, 1));
 
-	/*char * h2 = "a410000002200004500";
-	char * h3 = "000222bac888a410024da0022037804500";
-	char * h4 = "1234567899b4b3ca410024da0022037804501";
-	char * h5 = "100000000066cccfff8999b4b3ca410024da0022037804501"; */
-
 
 	ASSERT(0x000002200004500UL == apint_get_bits(objs->hex2, 0));
 	ASSERT(0x4da0022037804500UL == apint_get_bits(objs->hex3, 0));

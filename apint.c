@@ -132,7 +132,6 @@ uint64_t getVal(char hex) {
 	
 }
 
-
 /*
  * Frees any allocated memory associated with an ApInt object
  * 
@@ -550,63 +549,3 @@ ApInt *subtract_magnitudes(const ApInt *a, const ApInt *b) {
 	*diffApInt = apint;
 	return diffApInt;
 }
-
-/*
-*   Assume we have uint4_t values
-            val1: 1011 0111
-			val2: 1001 1111
-*      need to add 1011 + 1001 first, and then if there's overflow, we add 0001 + 0111 + 1111
-
-      1011
-	  1001
-
-
-
-          1111
-		  0011
-	 	 10010 
-
-*    assuming we have both positive or both negative values of the same length
-*    for each array element:
-*         add using add_magnitudes, place sum (the single uint16_t in corresponding value in new ApInt)
-*         if the previous sum had overflow, add 0000...01 to the next place
-*    if there was overflow on the last sum, add another array element of 0000...01
-*
-*
-*    assuming we have both positive or both negative values of different lengths:
-*      compare lengths
-*      for each array element in smaller-length ApInt
-*          add using add_magnitudes, place sum (the single uint16_t in corresponding value in new ApInt)
-*          if the previous sum had overflow, add 0000...01 to the next place
-*      for each remaining array value in longer ApInt
-*          append to new array
-*          *make sure to check if there's overflow from the last actual addition*
-*
-*
-*
-*
-*
-*   Assume we have uint4_t values
-            val1: 1011 1111   11 + 240 = 251  
-			val2: 1101 0111   13 + 112 = 125       difference should be 126
-*      need to subtract 1011 - 1001 
-*
-*         0*11        ****
-*         1101        0111
-*         1110        0111        =     14 + 112 = 126
-*
-*    assuming we have a larger positive value (A) and a smaller negative (B) value of the same length
-*       for each array element
-*            check which uint64_t value is greater
-*                 if the value from A is greater, call subtract magnitudes, put that difference in the new ApInt, continue
-                  if the value from B is greater, subtract A value from B value, add most significant bit
-
-				  1101
-				  0111
-				  0110
-*                 
-*         
-*       
-*
-*
-*/
