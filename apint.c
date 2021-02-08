@@ -82,7 +82,7 @@ ApInt *apint_create_from_hex(const char *hex) {
 
 // returns number of hex characters in given string
 // assumes hex is null-terminated!!
-int getValidSize(char *hex) {  
+int getValidSize(const char *hex) {  
 	char * p = hex;
 	int size = 0;
 	if (*p == '-') {
