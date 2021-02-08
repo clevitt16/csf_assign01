@@ -122,9 +122,7 @@ TestObjs *setup(void) {
 	objs->hex7 = apint_create_from_hex("00000000");
 	objs->hex8 = apint_create_from_hex("001ABF00");
 
-	char * h6 = "0000ff";
-	char * h7 = "00000000";
-	char * h8 = "001ABF00";
+	
 	char * h9 = "000007fb";
 	char * h10 = "1357def";
 	//objs->hex6 = apint_create_from_hex(h6);

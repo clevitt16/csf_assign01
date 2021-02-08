@@ -54,7 +54,9 @@ ApInt *apint_create_from_hex(const char *hex) {
 	}
 	uint64_t * data = calloc(len, sizeof(uint64_t));
 	uint32_t curIndex = 0; // tracks current index index in uint64_t data array
-	int fullSize = getFullSize(hex); // possibly unneccessary
+	
+	//int fullSize = getFullSize(hex); // possibly unneccessary
+	
 	while (*hex == '0') {
 		hex++;
 	}
@@ -423,9 +425,7 @@ int apint_compare(const ApInt *left, const ApInt *right) {
 // returns -1 if the magnitude of a is smaller than b, 1 if it's bigger, 0 if they're equal
 
 
-int compare_magnitudes(const ApInt *a, const ApInt *b) {
-	ApInt* left = a;
-	ApInt* right = b;
+int compare_magnitudes(const ApInt *left, const ApInt *right) {
 
 	if (left->len > right->len) { // case of different lengths
 		return 1;
