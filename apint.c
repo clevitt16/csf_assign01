@@ -66,7 +66,7 @@ ApInt *apint_create_from_hex(const char *hex) {
 		if (curIndex == len-1) {
 			c = getVal(hex[i - curIndex * 16]);
 		} else {
-			c = getVal(hex[size - 16*(curIndex+1) + i]);
+			c = getVal(hex[size - 16*(curIndex+1) + (i % 16)]);
 		}
 		uint64_t bits = data[curIndex];
 		bits = bits << 4;
