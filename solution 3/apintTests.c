@@ -305,9 +305,8 @@ void testHighestBitSet(TestObjs *objs) {
 	ASSERT(63 == apint_highest_bit_set(objs->max1));
 
 	ASSERT(64 == apint_highest_bit_set(objs->hex1));
-	ASSERT(7 == apint_highest_bit_set(objs->hex6));
-	ASSERT(-1 == apint_highest_bit_set(objs->hex7));
-	ASSERT(10 == apint_highest_bit_set(objs->hex9));
+
+	
 }
 
 void testFormatAsHex(TestObjs *objs) {
