@@ -55,7 +55,7 @@ void testNegate(TestObjs *objs);
 void testAddSingle(TestObjs *objs);
 void testAdd(TestObjs *objs);
 void testSubSingle(TestObjs *objs);
-void testSub();
+void testSub(TestObjs *objs);
 void testCompareSingle(TestObjs *objs);
 void testCompare(TestObjs *objs);
 
@@ -171,35 +171,7 @@ void testCreateFromHex(TestObjs *objs) {
 	ASSERT(0x0000ffUL == apint_get_bits(objs->nhex6, 0));
 	ASSERT(0UL == apint_get_bits(objs->nhex7, 0));
 	// testing with apint_format_as_hex
-	char * test;
-	ASSERT(0 == strcmp("10000000000000000", (test = apint_format_as_hex(objs->hex1))));
-	free(test);
-	ASSERT(0 == strcmp("a410000002200004500", (test = apint_format_as_hex(objs->hex2))));
-	free(test);
-	ASSERT(0 == strcmp("222bac888a410024da0022037804500", (test = apint_format_as_hex(objs->hex3))));
-	free(test);
-	ASSERT(0 == strcmp("1234567899b4b3ca410024da0022037804501", (test = apint_format_as_hex(objs->hex4))));
-	free(test);
-	ASSERT(0 == strcmp("100000000066cccfff8999b4b3ca410024da0022037804501", (test = apint_format_as_hex(objs->hex5))));
-	free(test);
-	ASSERT(0 == strcmp("ff", (test = apint_format_as_hex(objs->hex6))));
-	free(test);
-	ASSERT(0 == strcmp("0", (test = apint_format_as_hex(objs->hex7))));
-	free(test);
-	ASSERT(0 == strcmp("-10000000000000000", (test = apint_format_as_hex(objs->nhex1))));
-	free(test);
-	ASSERT(0 == strcmp("-a410000002200004500", (test = apint_format_as_hex(objs->nhex2))));
-	free(test);
-	ASSERT(0 == strcmp("-222bac888a410024da0022037804500", (test = apint_format_as_hex(objs->nhex3))));
-	free(test);
-	ASSERT(0 == strcmp("-1234567899b4b3ca410024da0022037804501", (test = apint_format_as_hex(objs->nhex4))));
-	free(test);
-	ASSERT(0 == strcmp("-100000000066cccfff8999b4b3ca410024da0022037804501", (test = apint_format_as_hex(objs->nhex5))));
-	free(test);
-	ASSERT(0 == strcmp("-ff", (test = apint_format_as_hex(objs->nhex6))));
-	free(test);
-	ASSERT(0 == strcmp("0", (test = apint_format_as_hex(objs->nhex7))));
-	free(test);
+
 
 }
 
@@ -266,30 +238,59 @@ void testFormatAsHex(TestObjs *objs) {
 	free(s);
 	ASSERT(0 == strcmp("ffffffffffffffff", (s = apint_format_as_hex(objs->max1))));
 	free(s);
+	ASSERT(0 == strcmp("10000000000000000", (s = apint_format_as_hex(objs->hex1))));
+	free(s);
+	ASSERT(0 == strcmp("a410000002200004500", (s = apint_format_as_hex(objs->hex2))));
+	free(s);
+	ASSERT(0 == strcmp("222bac888a410024da0022037804500", (s = apint_format_as_hex(objs->hex3))));
+	free(s);
+	ASSERT(0 == strcmp("1234567899b4b3ca410024da0022037804501", (s = apint_format_as_hex(objs->hex4))));
+	free(s);
+	ASSERT(0 == strcmp("100000000066cccfff8999b4b3ca410024da0022037804501", (s = apint_format_as_hex(objs->hex5))));
+	free(s);
+	ASSERT(0 == strcmp("ff", (s = apint_format_as_hex(objs->hex6))));
+	free(s);
+	ASSERT(0 == strcmp("0", (s = apint_format_as_hex(objs->hex7))));
+	free(s);
+	ASSERT(0 == strcmp("-10000000000000000", (s = apint_format_as_hex(objs->nhex1))));
+	free(s);
+	ASSERT(0 == strcmp("-a410000002200004500", (s = apint_format_as_hex(objs->nhex2))));
+	free(s);
+	ASSERT(0 == strcmp("-222bac888a410024da0022037804500", (s = apint_format_as_hex(objs->nhex3))));
+	free(s);
+	ASSERT(0 == strcmp("-1234567899b4b3ca410024da0022037804501", (s = apint_format_as_hex(objs->nhex4))));
+	free(s);
+	ASSERT(0 == strcmp("-100000000066cccfff8999b4b3ca410024da0022037804501", (s = apint_format_as_hex(objs->nhex5))));
+	free(s);
+	ASSERT(0 == strcmp("-ff", (s = apint_format_as_hex(objs->nhex6))));
+	free(s);
+	ASSERT(0 == strcmp("0", (s = apint_format_as_hex(objs->nhex7))));
+	free(s);
 }
 
 
 void testNegate(TestObjs *objs) {
 	ApInt *result;
-	
 	result = apint_negate(objs->ap0);
 	ASSERT(0 == result->data[0]);
 	apint_destroy(result);
-
 	result = apint_negate(objs->ap1);
 	ASSERT(1 == result->data[0]);
 	ASSERT(result->flags == 1);
 	apint_destroy(result);
-
 	result = apint_negate(objs->minus1);
 	ASSERT(1 == result->data[0]);
 	ASSERT(result->flags == 0);
 	apint_destroy(result);
-
-
 	result = apint_negate(objs->ap110660361);
 	ASSERT(110660361UL == result->data[0]);
 	ASSERT(result->flags == 1);
+	apint_destroy(result);
+	result = apint_negate(objs->hex3);
+	ASSERT(result->flags == 1);
+	apint_destroy(result);
+	result = apint_negate(objs->nhex4);
+	ASSERT(result->flags == 0);
 	apint_destroy(result);
 }
 
@@ -348,9 +349,20 @@ void testAdd(TestObjs *objs) {
 	ASSERT(0 == strcmp("-a420000002200004500", (s = apint_format_as_hex(sum))));
 	apint_destroy(sum);
 	free(s);
+	/* -1234567899b4b3ca410024da0022037804501 + -100000000066cccfff8999b4b3ca410024da0022037804501 = 
+	-100000000066df04560233696794820049b4004406f008a02 */
+	sum = apint_add(objs->nhex4, objs->nhex5);
+	ASSERT(0 == strcmp("-100000000066df04560233696794820049b4004406f008a02", (s = apint_format_as_hex(sum))));
+	apint_destroy(sum);
+	free(s);
 	/* -000222bac888a410024da0022037804500 + a410000002200004500 = -222bac888a405c14da001fe37800000 */
 	sum = apint_add(objs->nhex3, objs->hex2);
 	ASSERT(0 == strcmp("-222bac888a405c14da001fe37800000", (s = apint_format_as_hex(sum))));
+	apint_destroy(sum);
+	free(s);
+	/* 000222bac888a410024da0022037804500 + -a410000002200004500 = 222bac888a405c14da001fe37800000 */
+	sum = apint_add(objs->hex3, objs->nhex2);
+	ASSERT(0 == strcmp("222bac888a405c14da001fe37800000", (s = apint_format_as_hex(sum))));
 	apint_destroy(sum);
 	free(s);
 }
@@ -360,27 +372,23 @@ void testAdd(TestObjs *objs) {
 void testSubSingle(TestObjs *objs) {
 	ApInt *diff;
 	char *s;
-
 	/* subtracting 1 from ffffffffffffffff is fffffffffffffffe */
 	diff = apint_sub(objs->max1, objs->ap1);
 	ASSERT(0 == strcmp("fffffffffffffffe", (s = apint_format_as_hex(diff))));
 	apint_destroy(diff);
 	free(s);
-
 	/* subtracting 0 from 1 is 1 */
 	diff = apint_sub(objs->ap1, objs->ap0);
 	ASSERT(0 == strcmp("1", (s = apint_format_as_hex(diff))));
 	ASSERT(0 == apint_compare(diff, objs->ap1));
 	apint_destroy(diff);
 	free(s);
-
 	/* subtracting 1 from 1 is 0 */
 	diff = apint_sub(objs->ap1, objs->ap1);
 	ASSERT(0 == strcmp("0", (s = apint_format_as_hex(diff))));
 	ASSERT(0 == apint_compare(diff, objs->ap0));
 	apint_destroy(diff);
 	free(s);
-
 	/* subtracting 1 from 0 is -1 */
 	diff = apint_sub(objs->ap0, objs->ap1);
 	ASSERT(0 == (strcmp("-1", (s = apint_format_as_hex(diff)))));
@@ -389,9 +397,35 @@ void testSubSingle(TestObjs *objs) {
 	free(s);
 }
 	
-void testSub() {
+void testSub(TestObjs *objs) {
 	ApInt* diff;
 	char * s;
+	/* -10000000000000000  - a410000002200004500 = -a420000002200004500 */
+	diff = apint_sub(objs->nhex1, objs->hex2);
+	ASSERT(0 == strcmp("-a420000002200004500", (s = apint_format_as_hex(diff))));
+	apint_destroy(diff);
+	free(s);
+	/* -1234567899b4b3ca410024da0022037804501 - 100000000066cccfff8999b4b3ca410024da0022037804501 = 
+	-100000000066df04560233696794820049b4004406f008a02 */
+	diff = apint_sub(objs->nhex4, objs->hex5);
+	ASSERT(0 == strcmp("-100000000066df04560233696794820049b4004406f008a02", (s = apint_format_as_hex(diff))));
+	apint_destroy(diff);
+	free(s);
+	/* -000222bac888a410024da0022037804500 - -a410000002200004500 = -222bac888a405c14da001fe37800000 */
+	diff = apint_sub(objs->nhex3, objs->nhex2);
+	ASSERT(0 == strcmp("-222bac888a405c14da001fe37800000", (s = apint_format_as_hex(diff))));
+	apint_destroy(diff);
+	free(s);
+	/* 0000ff - 0000ff = 0 */
+	diff = apint_sub(objs->hex6, objs->hex6);
+	ASSERT(0 == strcmp("0", (s = apint_format_as_hex(diff))));
+	apint_destroy(diff);
+	free(s);
+	/* -0000ff - -0000ff = 0 */
+	diff = apint_sub(objs->nhex6, objs->nhex6);
+	ASSERT(0 == strcmp("0", (s = apint_format_as_hex(diff))));
+	apint_destroy(diff);
+	free(s);
 	ApInt * a = apint_create_from_hex("7e35207519b6b06429378631ca460905c19537644f31dc50114e9dc90bb4e4ebc43cfebe6b86d");
 	ApInt * b = apint_create_from_hex("9fa0fb165441ade7cb8b17c3ab3653465e09e8078e09631ec8f6fe3a5b301dc");
 	diff = apint_sub(a, b);
@@ -401,7 +435,6 @@ void testSub() {
 	apint_destroy(b);
 	apint_destroy(a);
 	free(s);
-
 	a = apint_create_from_hex("9fa0fb165441ade7cb8b17c3ab3653465e09e8078e09631ec8f6fe3a5b301dc");
 	b = apint_create_from_hex("7e35207519b6b06429378631ca460905c19537644f31dc50114e9dc90bb4e4ebc43cfebe6b86d");
 	diff = apint_sub(a, b);
@@ -430,10 +463,14 @@ void testCompareSingle(TestObjs *objs) {
 }
 
 void testCompare(TestObjs *objs) {
+	ASSERT(apint_compare(objs->ap0, objs->hex4) > 0);
+	ASSERT(apint_compare(objs->ap0, objs->nhex4) < 0);
 	ASSERT(apint_compare(objs->hex1, objs->hex2) < 0);
 	ASSERT(apint_compare(objs->hex3, objs->hex1) > 0);
 	ASSERT(apint_compare(objs->hex4, objs->hex4) == 0);
+	ASSERT(apint_compare(objs->nhex3, objs->nhex3) == 0);
 	ASSERT(apint_compare(objs->hex1, objs->nhex1) > 0);
 	ASSERT(apint_compare(objs->nhex2, objs->hex2) < 0);
 	ASSERT(apint_compare(objs->nhex6, objs->hex5) < 0);
+	ASSERT(apint_compare(objs->hex7, objs->nhex7) == 0);
 }

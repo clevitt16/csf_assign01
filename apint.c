@@ -66,7 +66,6 @@ ApInt *apint_create_from_hex(const char *hex) {
 	}
 	uint64_t * data = calloc(len, sizeof(uint64_t));
 	uint32_t curIndex = 0; // tracks current index index in uint64_t data array
-	
 	while (*hex == '0') {
 		hex++;
 	}
@@ -90,6 +89,7 @@ ApInt *apint_create_from_hex(const char *hex) {
 	return ptr;
 }
 
+
 /*
  * Determines the length of the valid hexadecimal characters
  * from the given hexadecimal expression
@@ -101,7 +101,6 @@ ApInt *apint_create_from_hex(const char *hex) {
  * 	an integer representing the number of valid hex characters in the 
  * given char expression
  */
-
 int getValidSize(const char *hex) {  
 	int size = 0;
 	if (*hex == '-') {
@@ -120,29 +119,7 @@ int getValidSize(const char *hex) {
 	return size;
 }
 
-/*
- * Determines the full length of the hexadecimal expression,
- * excluding the presence of any negative signs
- * 
- * Parameters:
- * 	hex - a character pointer to a hexadecimal expression
- * 
- * Returns:
- * 	an integer representing the full length of the given hexadecimal 
- * expression
- */
 
-int getFullSize(char *hex) {
-	char * s = hex;
-	int fullSize = 0;
-	if (*s == '-') {
-		s++;
-	}
-	for (; *s != '\0'; s++) {
-		fullSize++;
-	}
-	return fullSize;
-}
 
 /*
  * Determines the decimal value associated with the given
@@ -154,9 +131,7 @@ int getFullSize(char *hex) {
  * 	an integer representing the valid decimal value of the 
  * specific hex character
  */
-
 uint64_t getVal(char hex) {
-
 	char c = hex;
 	int val = c - '0';
 	if (val <= 9) {
@@ -171,8 +146,8 @@ uint64_t getVal(char hex) {
 	else {
 		return -1;
 	}
-	
 }
+
 
 /*
  * Frees any allocated memory associated with an ApInt object
@@ -334,6 +309,7 @@ char *apint_format_as_hex(const ApInt *ap) {
 	return forwardsHex;
 }
 
+
 /*
  * Creates and allocates a new ApInt object that represents the
  * negation of the value in the given ApInt instance
@@ -405,6 +381,7 @@ ApInt *apint_add(const ApInt *a, const ApInt *b) {
 	return diff;
 }
 
+
 /*
  * Computes the difference between the values represented by the given 
  * Apint objects. Specifically, it subtracts the value represented by b
@@ -427,6 +404,7 @@ ApInt *apint_sub(const ApInt *a, const ApInt *b) {
 	return diff;
 }
 
+
 /*
  * 
  * Compares the values represented by the given ApInt instances. Returns
@@ -446,8 +424,7 @@ int apint_compare(const ApInt *left, const ApInt *right) {
 	int rightSign = apint_is_negative(right);
 	if (leftSign != rightSign) { // case that one is positive and the other negative
 		return rightSign - leftSign;
-	} 
-	// assuming they have the same sign
+	}  // assuming they have the same sign
 	int cmp = compare_magnitudes(left, right);
 	if (cmp == 0) {
 		return 0;
@@ -460,9 +437,7 @@ int apint_compare(const ApInt *left, const ApInt *right) {
 	} else { // negatives, left has bigger magnitude
 		return -1;
 	}
-
 }
-
 
 
 /*
@@ -480,9 +455,7 @@ int apint_compare(const ApInt *left, const ApInt *right) {
  *  an int indicating which ApInt value is greater
  * 
  */
-
 int compare_magnitudes(const ApInt *left, const ApInt *right) {
-
 	if (left->len > right->len) { // case of different lengths
 		return 1;
 	}
@@ -519,7 +492,6 @@ int compare_magnitudes(const ApInt *left, const ApInt *right) {
  * 	sum of the values represented by a and b
  * 
  */
-// will change this to add values with any-length data arrays
 ApInt *add_magnitudes(const ApInt *a, const ApInt *b) {
 	ApInt * sumApInt = malloc(sizeof(ApInt));
 	uint64_t * sumData;
@@ -545,9 +517,9 @@ ApInt *add_magnitudes(const ApInt *a, const ApInt *b) {
 			bVal = b->data[index];
 		}
 		uint64_t sum = aVal + bVal + carry;
-		if (sum < aVal || sum < bVal) { // case that addition of uint64_t values caused overflow
-			carry = 1UL; // need to confirm that carry won't mess up this check
-		} else {
+		if ((sum <= aVal && bVal != 0UL) || (sum <= bVal && aVal != 0UL)) { // case that addition of uint64_t values caused overflow
+			carry = 1UL; 
+		} else { 
 			carry = 0UL;
 		} 
 		sumData[index] = sum;
@@ -573,8 +545,6 @@ ApInt *add_magnitudes(const ApInt *a, const ApInt *b) {
  * Returns:
  * 	a pointer to an ApInt object holding the difference between the magnitudes
  * 	of the values represented by a and b
- * 
- * // will change to work for any-length arrays
  */
 ApInt *subtract_magnitudes(const ApInt *a, const ApInt *b) {
 	ApInt * diffApInt = malloc(sizeof(ApInt));
@@ -591,14 +561,13 @@ ApInt *subtract_magnitudes(const ApInt *a, const ApInt *b) {
 			bVal = b->data[index];
 		}
 		uint64_t diff = a->data[index] - bVal - borrow;
-		if (diff >= a->data[index] && bVal != 0UL) {
-			borrow = 1UL;
+		if (diff >= a->data[index] && bVal != 0UL) {   
+			borrow = 1UL;                                  
 		} else {
 			borrow = 0UL;
 		}
 		diffData[index] = diff;
-	}
-	// if borrow == 1 at this point, problem!!
+	} // if borrow == 1 at this point, problem!!
 	assert(borrow == 0UL);
 	while(diffData[index - 1] == 0UL) {
 		index--;
