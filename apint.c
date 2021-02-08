@@ -83,16 +83,15 @@ ApInt *apint_create_from_hex(const char *hex) {
 // returns number of hex characters in given string
 // assumes hex is null-terminated!!
 int getValidSize(const char *hex) {  
-	char * p = hex;
 	int size = 0;
-	if (*p == '-') {
-		p++;
+	if (*hex == '-') {
+		hex++;
 	}
-	while (*p == '0') {
-		p++;
+	while (*hex == '0') {
+		hex++;
 	}
-	for (; *p != '\0'; p++) {
-		char digit = *p;
+	for (; *hex != '\0'; p++) {
+		char digit = *hex;
 		if (!((digit >= '0' && digit <= '9') || (digit >= 'a' && digit <= 'f') || (digit >= 'A' && digit <= 'F'))) {
 			return -1;
 		}
