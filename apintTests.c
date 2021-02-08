@@ -463,8 +463,8 @@ void testCompareSingle(TestObjs *objs) {
 }
 
 void testCompare(TestObjs *objs) {
-	ASSERT(apint_compare(objs->ap0, objs->hex4) > 0);
-	ASSERT(apint_compare(objs->ap0, objs->nhex4) < 0);
+	ASSERT(apint_compare(objs->ap0, objs->hex4) < 0);
+	ASSERT(apint_compare(objs->ap0, objs->nhex4) > 0);
 	ASSERT(apint_compare(objs->hex1, objs->hex2) < 0);
 	ASSERT(apint_compare(objs->hex3, objs->hex1) > 0);
 	ASSERT(apint_compare(objs->hex4, objs->hex4) == 0);
