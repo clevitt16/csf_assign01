@@ -34,7 +34,19 @@ ApInt *apint_create_from_u64(uint64_t val) {
 	return ptr;
 }
 
-// Peter
+/*
+ * Creates an and allocates a ApInt object from a given
+ * character of hex digits. The function is supported by the
+ * use of helper functions to determine the valid size and
+ * validity of the hex characters to be checked
+ * 
+ * Parameters:
+ * 	hex - a character pointer to a hexadecimal expression
+ * 
+ * Returns:
+ *  pointer to the dynamically allocated ApInt object
+ */
+
 ApInt *apint_create_from_hex(const char *hex) {
 	int size = getValidSize(hex); // get the number on non-zero hex digits
 	if (size == -1) {  // case that the string was invalid
@@ -54,8 +66,6 @@ ApInt *apint_create_from_hex(const char *hex) {
 	}
 	uint64_t * data = calloc(len, sizeof(uint64_t));
 	uint32_t curIndex = 0; // tracks current index index in uint64_t data array
-	
-	//int fullSize = getFullSize(hex); // possibly unneccessary
 	
 	while (*hex == '0') {
 		hex++;
@@ -80,8 +90,18 @@ ApInt *apint_create_from_hex(const char *hex) {
 	return ptr;
 }
 
-// returns number of hex characters in given string
-// assumes hex is null-terminated!!
+/*
+ * Determines the length of the valid hexadecimal characters
+ * from the given hexadecimal expression
+ * 
+ * Parameters:
+ * 	hex - a character pointer to a hexadecimal expression
+ * 
+ * Returns:
+ * 	an integer representing the number of valid hex characters in the 
+ * given char expression
+ */
+
 int getValidSize(const char *hex) {  
 	int size = 0;
 	if (*hex == '-') {
@@ -100,6 +120,18 @@ int getValidSize(const char *hex) {
 	return size;
 }
 
+/*
+ * Determines the full length of the hexadecimal expression,
+ * excluding the presence of any negative signs
+ * 
+ * Parameters:
+ * 	hex - a character pointer to a hexadecimal expression
+ * 
+ * Returns:
+ * 	an integer representing the full length of the given hexadecimal 
+ * expression
+ */
+
 int getFullSize(char *hex) {
 	char * s = hex;
 	int fullSize = 0;
@@ -112,7 +144,17 @@ int getFullSize(char *hex) {
 	return fullSize;
 }
 
-// used to get decimal value from a hex character
+/*
+ * Determines the decimal value associated with the given
+ * hex character
+ * Parameters:
+ * 	hex - a character of the hexadecimal expression
+ * 
+ * Returns:
+ * 	an integer representing the valid decimal value of the 
+ * specific hex character
+ */
+
 uint64_t getVal(char hex) {
 
 	char c = hex;
@@ -204,8 +246,8 @@ uint64_t apint_get_bits(const ApInt *ap, unsigned n) {
 
 
 /*
- * Determines the highest bit set in the represntation of the 64-bit
- * value stored in the first element of the data field for an ApInt
+ * Determines the highest bit set in the represntation of the
+ * value stored in the data field of the ApInt object
  * object.
  * 
  * Parameters:
@@ -321,8 +363,6 @@ ApInt *apint_negate(const ApInt *ap) {
 }
 
 /*
- * TO DO
- *
  * Computes the sum of the first elements from the data array in 
  * two separate Apint objects. The function uses the add_magnitudes 
  * and subtract_magnitudes helper functions to handle the appropriate 
@@ -423,8 +463,23 @@ int apint_compare(const ApInt *left, const ApInt *right) {
 
 }
 
-// returns -1 if the magnitude of a is smaller than b, 1 if it's bigger, 0 if they're equal
 
+
+/*
+ * 
+ * Compares the values represented by the given ApInt instances.
+ * Checks the given length of the ApInt objects and then iterates through
+ * the indices of the objects to determine which object represents a 
+ * greater value.
+ * 
+ * Parameters:
+ * left - a pointer to an ApInt object
+ * right - a ponter to an ApInt object
+ * 
+ * Returns:
+ *  an int indicating which ApInt value is greater
+ * 
+ */
 
 int compare_magnitudes(const ApInt *left, const ApInt *right) {
 
