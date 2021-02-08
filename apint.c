@@ -351,7 +351,7 @@ ApInt *apint_add(const ApInt *a, const ApInt *b) {
 		if (apint_is_negative(a)) {
 			diff->flags = 1UL;
 		}
-	} else if (cmp > 0) { // magnitude of b is greater
+	} else if (cmp < 0) { // magnitude of b is greater
 		diff = subtract_magnitudes(b, a);
 		if (apint_is_negative(b)) {
 			diff->flags = 1UL;
