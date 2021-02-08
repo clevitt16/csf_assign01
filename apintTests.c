@@ -253,7 +253,7 @@ void testCreateFromHex(TestObjs *objs) {
 	ASSERT(0 == strcmp("0", (test = apint_format_as_hex(objs->hex7))));
 	free(test);
 
-	ASSERT(0 == strcmp("1ABF00", (test = apint_format_as_hex(objs->hex8))));
+	ASSERT(0 == strcmp("1abf00", (test = apint_format_as_hex(objs->hex8))));
 	free(test);
 
 	ASSERT(0 == strcmp("7fb", (test = apint_format_as_hex(objs->hex9))));
