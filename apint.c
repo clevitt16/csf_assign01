@@ -222,6 +222,9 @@ int apint_highest_bit_set(const ApInt *ap) {
 	}
 	 uint64_t bits = ap->data[ap->len - 1];
 	 uint64_t size = 64UL;
+	
+	//int pos = (ap->len * 64) - 1;
+	 
 	for (uint64_t i = 0; i < size; i++) {
 		if (((0x8000000000000000 >> i) & bits) != 0) {   
 			return 63 - i;                                       
