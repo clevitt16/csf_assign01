@@ -90,7 +90,7 @@ int getValidSize(const char *hex) {
 	while (*hex == '0') {
 		hex++;
 	}
-	for (; *hex != '\0'; p++) {
+	for (; *hex != '\0'; hex++) {
 		char digit = *hex;
 		if (!((digit >= '0' && digit <= '9') || (digit >= 'a' && digit <= 'f') || (digit >= 'A' && digit <= 'F'))) {
 			return -1;
