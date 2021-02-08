@@ -23,31 +23,22 @@ typedef struct {
 	ApInt *ap110660361;
 	ApInt *max1;
 	ApInt *minus1;
-	// ApInts multi-array representing positive numbers , increasing magnitude
+	// ApInts created form hex representing positive numbers
 	ApInt *hex1;
 	ApInt *hex2;
 	ApInt *hex3;
 	ApInt *hex4;
 	ApInt *hex5;
-
 	ApInt *hex6;
 	ApInt *hex7;
-	ApInt *hex8;
-	ApInt *hex9;
-	ApInt *hex10;
-
-	// ApInts multi-array representing negative numbers , increasing magnitude
+	// ApInts created from hex representing negative numbers
 	ApInt *nhex1;
 	ApInt *nhex2;
 	ApInt *nhex3;
 	ApInt *nhex4;
 	ApInt *nhex5;
-
 	ApInt *nhex6;
 	ApInt *nhex7;
-	ApInt *nhex8;
-	ApInt *nhex9;
-	ApInt *nhex10;
 } TestObjs;
 
 TestObjs *setup(void);
@@ -67,7 +58,6 @@ void testSubSingle(TestObjs *objs);
 void testSub();
 void testCompareSingle(TestObjs *objs);
 void testCompare(TestObjs *objs);
-/* TODO: add more test function prototypes */
 
 int main(int argc, char **argv) {
 	TEST_INIT();
@@ -94,9 +84,6 @@ int main(int argc, char **argv) {
 	TEST(testSub);
 	TEST(testCompareSingle); 
 	TEST(testCompare);
-	
-	
-
 	TEST_FINI();
 }
 
@@ -108,52 +95,21 @@ TestObjs *setup(void) {
 	objs->max1 = apint_create_from_u64(0xFFFFFFFFFFFFFFFFUL);
 	objs->minus1 = apint_negate(objs->ap1);
 
-	/* char * h1 = "10000000000000000";
-	char * h2 = "a410000002200004500";
-	char * h3 = "000222bac888a410024da0022037804500";
-	char * h4 = "1234567899b4b3ca410024da0022037804501";
-	char * h5 = "100000000066cccfff8999b4b3ca410024da0022037804501"; */
 	objs->hex1 = apint_create_from_hex("10000000000000000");
 	objs->hex2 = apint_create_from_hex("a410000002200004500");
-	objs->hex3 = apint_create_from_hex("000222bac888a410024da0022037804500"); // size = 31 1st index is 15
+	objs->hex3 = apint_create_from_hex("000222bac888a410024da0022037804500");
 	objs->hex4 = apint_create_from_hex("1234567899b4b3ca410024da0022037804501");
 	objs->hex5 = apint_create_from_hex("100000000066cccfff8999b4b3ca410024da0022037804501");
 	objs->hex6 = apint_create_from_hex("0000ff");
 	objs->hex7 = apint_create_from_hex("00000000");
-	objs->hex8 = apint_create_from_hex("001ABF00");
 
-	
-	char * h9 = "000007fb";
-	char * h10 = "1357def";
-	//objs->hex6 = apint_create_from_hex(h6);
-	//objs->hex7 = apint_create_from_hex(h7);
-	//objs->hex8 = apint_create_from_hex(h8);
-	objs->hex9 = apint_create_from_hex(h9);
-	objs->hex10 = apint_create_from_hex(h10);
-
-
-	char * n1 = "-10000000000000000";
-	char * n2 = "-a410000002200004500";
-	char * n3 = "-000222bac888a410024da0022037804500";
-	char * n4 = "-1234567899b4b3ca410024da0022037804501";
-	char * n5 = "-100000000066cccfff8999b4b3ca410024da0022037804501";
-	objs->nhex1 = apint_create_from_hex(n1);
-	objs->nhex2 = apint_create_from_hex(n2);
-	objs->nhex3 = apint_create_from_hex(n3);
-	objs->nhex4 = apint_create_from_hex(n4);
-	objs->nhex5 = apint_create_from_hex(n5);
-
-
-	char * n6 = "-0000ff";
-	char * n7 = "-0000000";
-	char * n8 = "-001ABF00";
-	char * n9 = "-000007fb";
-	char * n10 = "-1357def";
-	objs->nhex6 = apint_create_from_hex(n6);
-	objs->nhex7 = apint_create_from_hex(n7);
-	objs->nhex8 = apint_create_from_hex(n8);
-	objs->nhex9 = apint_create_from_hex(n9);
-	objs->nhex10 = apint_create_from_hex(n10);
+	objs->nhex1 = apint_create_from_hex("-10000000000000000");
+	objs->nhex2 = apint_create_from_hex("-a410000002200004500");
+	objs->nhex3 = apint_create_from_hex("-000222bac888a410024da0022037804500");
+	objs->nhex4 = apint_create_from_hex("-1234567899b4b3ca410024da0022037804501");
+	objs->nhex5 = apint_create_from_hex("-100000000066cccfff8999b4b3ca410024da0022037804501");
+	objs->nhex6 = apint_create_from_hex("-0000ff");
+	objs->nhex7 = apint_create_from_hex("-0000000");
 
 	return objs;
 }
@@ -164,7 +120,6 @@ void cleanup(TestObjs *objs) {
 	apint_destroy(objs->ap110660361);
 	apint_destroy(objs->max1);
 	apint_destroy(objs->minus1);
-	/* TODO: destroy additional members of test fixture */
 	apint_destroy(objs->hex1);
 	apint_destroy(objs->hex2);
 	apint_destroy(objs->hex3);
@@ -172,9 +127,6 @@ void cleanup(TestObjs *objs) {
 	apint_destroy(objs->hex5);
 	apint_destroy(objs->hex6);
 	apint_destroy(objs->hex7);
-	apint_destroy(objs->hex8);
-	apint_destroy(objs->hex9);
-	apint_destroy(objs->hex10);
 	apint_destroy(objs->nhex1);
 	apint_destroy(objs->nhex2);
 	apint_destroy(objs->nhex3);
@@ -182,9 +134,6 @@ void cleanup(TestObjs *objs) {
 	apint_destroy(objs->nhex5);
 	apint_destroy(objs->nhex6);
 	apint_destroy(objs->nhex7);
-	apint_destroy(objs->nhex8);
-	apint_destroy(objs->nhex9);
-	apint_destroy(objs->nhex10); 
 	free(objs);
 }
 
@@ -196,69 +145,69 @@ void testCreateFromU64(TestObjs *objs) {
 }
 
 void testCreateFromHex(TestObjs *objs) {
-
+	// testing with apint_get_bits
 	ASSERT(0UL == apint_get_bits(objs->hex1, 0));
 	ASSERT(1UL == apint_get_bits(objs->hex1, 1));
-
-
 	ASSERT(0x000002200004500UL == apint_get_bits(objs->hex2, 0));
-	ASSERT(0x4da0022037804500UL == apint_get_bits(objs->hex3, 0));
-	ASSERT(0x4da0022037804501UL == apint_get_bits(objs->hex4, 0));
-	ASSERT(0x4da0022037804501UL == apint_get_bits(objs->hex5, 0));
-
 	ASSERT(0xa41UL == apint_get_bits(objs->hex2, 1));
+	ASSERT(0x4da0022037804500UL == apint_get_bits(objs->hex3, 0));
 	ASSERT(0x0222bac888a41002UL == apint_get_bits(objs->hex3, 1));
+	ASSERT(0x4da0022037804501UL == apint_get_bits(objs->hex4, 0));
 	ASSERT(0x67899b4b3ca41002UL == apint_get_bits(objs->hex4, 1));
+	ASSERT(0x4da0022037804501UL == apint_get_bits(objs->hex5, 0));
 	ASSERT(0xf8999b4b3ca41002UL == apint_get_bits(objs->hex5, 1));
-
 	ASSERT(0x0000ffUL == apint_get_bits(objs->hex6, 0));
 	ASSERT(0UL == apint_get_bits(objs->hex7, 0));
-	ASSERT(0x001ABF00UL == apint_get_bits(objs->hex8, 0));
-	ASSERT(0x000007fbUL == apint_get_bits(objs->hex9, 0));
-	ASSERT(0x1357defUL == apint_get_bits(objs->hex10, 0));
+	ASSERT(0UL == apint_get_bits(objs->nhex1, 0));
+	ASSERT(1UL == apint_get_bits(objs->nhex1, 1));
+	ASSERT(0x000002200004500UL == apint_get_bits(objs->nhex2, 0));
+	ASSERT(0xa41UL == apint_get_bits(objs->nhex2, 1));
+	ASSERT(0x4da0022037804500UL == apint_get_bits(objs->nhex3, 0));
+	ASSERT(0x0222bac888a41002UL == apint_get_bits(objs->nhex3, 1));
+	ASSERT(0x4da0022037804501UL == apint_get_bits(objs->nhex4, 0));
+	ASSERT(0x67899b4b3ca41002UL == apint_get_bits(objs->nhex4, 1));
+	ASSERT(0x4da0022037804501UL == apint_get_bits(objs->nhex5, 0));
+	ASSERT(0xf8999b4b3ca41002UL == apint_get_bits(objs->nhex5, 1));
 	ASSERT(0x0000ffUL == apint_get_bits(objs->nhex6, 0));
 	ASSERT(0UL == apint_get_bits(objs->nhex7, 0));
-	ASSERT(0x001ABF00UL == apint_get_bits(objs->nhex8, 0));
-	ASSERT(0x000007fbUL == apint_get_bits(objs->nhex9, 0));
-	ASSERT(0x1357defUL == apint_get_bits(objs->nhex10, 0)); 
-
+	// testing with apint_format_as_hex
 	char * test;
-	//TODO: May run into issues with ignoring leading zeroes in create from hex
 	ASSERT(0 == strcmp("10000000000000000", (test = apint_format_as_hex(objs->hex1))));
 	free(test);
-	
 	ASSERT(0 == strcmp("a410000002200004500", (test = apint_format_as_hex(objs->hex2))));
 	free(test);
-
 	ASSERT(0 == strcmp("222bac888a410024da0022037804500", (test = apint_format_as_hex(objs->hex3))));
 	free(test);
-
 	ASSERT(0 == strcmp("1234567899b4b3ca410024da0022037804501", (test = apint_format_as_hex(objs->hex4))));
 	free(test);
-
 	ASSERT(0 == strcmp("100000000066cccfff8999b4b3ca410024da0022037804501", (test = apint_format_as_hex(objs->hex5))));
 	free(test);
-
-
 	ASSERT(0 == strcmp("ff", (test = apint_format_as_hex(objs->hex6))));
 	free(test);
-
 	ASSERT(0 == strcmp("0", (test = apint_format_as_hex(objs->hex7))));
 	free(test);
-
-	ASSERT(0 == strcmp("1abf00", (test = apint_format_as_hex(objs->hex8))));
+	ASSERT(0 == strcmp("-10000000000000000", (test = apint_format_as_hex(objs->nhex1))));
+	free(test);
+	ASSERT(0 == strcmp("-a410000002200004500", (test = apint_format_as_hex(objs->nhex2))));
+	free(test);
+	ASSERT(0 == strcmp("-222bac888a410024da0022037804500", (test = apint_format_as_hex(objs->nhex3))));
+	free(test);
+	ASSERT(0 == strcmp("-1234567899b4b3ca410024da0022037804501", (test = apint_format_as_hex(objs->nhex4))));
+	free(test);
+	ASSERT(0 == strcmp("-100000000066cccfff8999b4b3ca410024da0022037804501", (test = apint_format_as_hex(objs->nhex5))));
+	free(test);
+	ASSERT(0 == strcmp("-ff", (test = apint_format_as_hex(objs->nhex6))));
+	free(test);
+	ASSERT(0 == strcmp("0", (test = apint_format_as_hex(objs->nhex7))));
 	free(test);
 
-	ASSERT(0 == strcmp("7fb", (test = apint_format_as_hex(objs->hex9))));
-	free(test);
-
-	ASSERT(0 == strcmp("1357def", (test = apint_format_as_hex(objs->hex10))));
-	free(test);  
 }
 
 
 void testApintIsZero(TestObjs *objs) {
 	ASSERT(apint_is_zero(objs->ap0));
+	ASSERT(apint_is_zero(objs->hex7));
+	ASSERT(apint_is_zero(objs->nhex7));
 	ASSERT(!apint_is_zero(objs->ap1));
 	ASSERT(!apint_is_zero(objs->minus1));
 	ASSERT(!apint_is_zero(objs->max1));
@@ -281,9 +230,6 @@ void testApintIsNegative(TestObjs *objs) {
 	ASSERT(apint_is_negative(objs->nhex5));
 	ASSERT(apint_is_negative(objs->nhex6));
 	ASSERT(!apint_is_negative(objs->nhex7));
-	ASSERT(apint_is_negative(objs->nhex8));
-	ASSERT(apint_is_negative(objs->nhex9));
-	ASSERT(apint_is_negative(objs->nhex10));
 
 }
 
@@ -295,6 +241,8 @@ void testApintGetBits(TestObjs *objs) {
 	ASSERT(1UL == apint_get_bits(objs->ap1, 0));
 	ASSERT(1UL == apint_get_bits(objs->minus1, 0));
 	ASSERT(110660361UL == apint_get_bits(objs->ap110660361, 0));
+	ASSERT(0x0222bac888a41002UL == apint_get_bits(objs->nhex3, 1));
+	ASSERT(0xf8999b4b3ca41002UL == apint_get_bits(objs->hex5, 1));
 }
 
 
@@ -303,25 +251,19 @@ void testHighestBitSet(TestObjs *objs) {
 	ASSERT(0 == apint_highest_bit_set(objs->ap1));
 	ASSERT(26 == apint_highest_bit_set(objs->ap110660361));
 	ASSERT(63 == apint_highest_bit_set(objs->max1));
-
 	ASSERT(64 == apint_highest_bit_set(objs->hex1));
 	ASSERT(7 == apint_highest_bit_set(objs->hex6));
 	ASSERT(-1 == apint_highest_bit_set(objs->hex7));
-	ASSERT(10 == apint_highest_bit_set(objs->hex9));
 }
 
 void testFormatAsHex(TestObjs *objs) {
 	char *s;
-	
 	ASSERT(0 == strcmp("0", (s = apint_format_as_hex(objs->ap0))));
 	free(s);
-
 	ASSERT(0 == strcmp("1", (s = apint_format_as_hex(objs->ap1))));
 	free(s);
-
 	ASSERT(0 == strcmp("6988b09", (s = apint_format_as_hex(objs->ap110660361))));
 	free(s);
-
 	ASSERT(0 == strcmp("ffffffffffffffff", (s = apint_format_as_hex(objs->max1))));
 	free(s);
 }
