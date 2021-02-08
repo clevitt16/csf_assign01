@@ -213,10 +213,10 @@ void testCreateFromHex(TestObjs *objs) {
 	ASSERT(0x4da0022037804501UL == apint_get_bits(objs->hex4, 0));
 	ASSERT(0x4da0022037804501UL == apint_get_bits(objs->hex5, 0));
 
-	/*ASSERT(0xa410UL == apint_get_bits(objs->hex2, 1));
-	ASSERT(0x22bac888a410024UL == apint_get_bits(objs->hex3, 1));
-	ASSERT(0x899b4b3ca410024UL == apint_get_bits(objs->hex4, 1));
-	ASSERT(0x999b4b3ca410024UL == apint_get_bits(objs->hex5, 1));*/
+	ASSERT(0xa41UL == apint_get_bits(objs->hex2, 1));
+	ASSERT(0x0222bac888a41002UL == apint_get_bits(objs->hex3, 1));
+	ASSERT(0x67899b4b3ca41002UL == apint_get_bits(objs->hex4, 1));
+	ASSERT(0xf8999b4b3ca41002UL == apint_get_bits(objs->hex5, 1));
 
 	ASSERT(0x0000ffUL == apint_get_bits(objs->hex6, 0));
 	ASSERT(0UL == apint_get_bits(objs->hex7, 0));
